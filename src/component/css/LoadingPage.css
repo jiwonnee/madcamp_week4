@@ -1,0 +1,23 @@
+.loading-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #000; /* 검은색 배경 */
+    color: #fff; /* 밝은 글씨 */
+  }
+  
+  .loading-text {
+    font-size: 3rem;
+    animation: fadeOut 1.8s forwards;
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
