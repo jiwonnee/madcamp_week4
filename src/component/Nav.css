@@ -1,0 +1,22 @@
+.navbar {
+    width: 100%;
+    background-color: black;
+    padding: 15px 0px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    height: 30px;
+}
+
+.navbarMenu {
+    color: white;
+    margin: 8px;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.logoImg {
+    margin-left: 9px;
+    width: 25px;
+    height: 25px;
+}
