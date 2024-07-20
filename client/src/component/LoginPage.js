@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import './css/LoginPage.css'; // 스타일을 위한 CSS 파일
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +20,7 @@ const LoginPage = ({ onLogin }) => {
       const data = await response.json();
       if (response.ok) {
         onLogin(data.user); 
+        navigate('/main');
       } else {
         alert(data.message);
       }
@@ -52,6 +55,7 @@ const LoginPage = ({ onLogin }) => {
             <input type="checkbox" id="remember" name="remember" />
             <label for="remember">Remember me</label>
           </div>
+          <div class="spacer"></div>
           <div class="forgot-pwd">
             <label><div class="alter-page">비밀번호를 잊으셨나요?</div></label>
           </div>
@@ -60,7 +64,9 @@ const LoginPage = ({ onLogin }) => {
         <button type="submit" class="btn draw-border">Login</button>
 
         <div>
-            <label class="sign-in-prompt">계정이 없으신가요?&nbsp;<div class="alter-page">새 계정 만들기</div></label>
+            <label class="sign-in-prompt">계정이 없으신가요?&nbsp;<Link to="/signup">
+                <div className="alter-page">새 계정 만들기</div>
+              </Link></label>
         </div>
       </form>
     </div>
