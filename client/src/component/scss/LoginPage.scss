@@ -131,6 +131,14 @@ button {
   }
 }
 
+.field {
+  width: 400px;
+
+  input {
+    margin-bottom: 10px;
+  }
+}
+
 :root {
   --element-width: 434px; /* 기본값 설정 */
 }

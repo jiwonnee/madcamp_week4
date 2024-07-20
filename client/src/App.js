@@ -17,7 +17,10 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path='/main' element={<Main user={user} />} />
+          <Route
+            path="/main"
+            element={user ? <Main user={user} /> : <Navigate to="/" />}
+          />
         </Routes>
       </div>
   );
