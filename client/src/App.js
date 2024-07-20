@@ -14,11 +14,12 @@ import { PlayerProvider } from './component/swissPages/PlayerInfo';
 import { RoundProvider } from './component/swissPages/RoundInfo';
 import LoadingPage from "./component/LoadingPage";
 import LoginPage from "./component/LoginPage";
+import CreateEvent from './component/pages/CreateEvent';
+import JoinEvent from './component/pages/JoinEvent';
 
 const StartPage = () => {
   return (
     <div>
-      <Nav />
       <Main />
     </div>
   );
@@ -116,6 +117,8 @@ function App() {
               <Route path="/round/:numS" element={<RoundInfoRender />} />
               <Route path="/tournament" element={<TournamentRender />} />
               <Route path="/notice" element={<NoticeRender />} />
+              <Route path="/create_event" element={<CreateEvent />} />
+              <Route path="/join_event" element={<JoinEvent />} />
             </Routes>
           </div>
         </BrowserRouter>
