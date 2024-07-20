@@ -105,8 +105,10 @@ button {
   cursor: pointer;
   line-height: 1.5;
   font: 700 1.2rem "Roboto Slab", sans-serif;
-  padding: 1em 186px;
   letter-spacing: 0.05rem;
+  box-sizing: border-box;
+  width: var(--element-width);
+  height: 60px;
 
   &:focus {
     outline: 2px dotted #55d7dc;
@@ -129,8 +131,17 @@ button {
   }
 }
 
+:root {
+  --element-width: 434px; /* 기본값 설정 */
+}
+
 .login-addons {
+  width: var(--element-width);
   display: flex;
+}
+
+.spacer {
+  flex-grow: 1;
 }
 
 .remember-me {
@@ -149,7 +160,6 @@ button {
 
   label {
     margin-bottom: 0; /* 제거하여 체크박스와 라벨 간격 없애기 */
-    margin-right: 130px;
   }
 }
 
