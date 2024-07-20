@@ -8,7 +8,9 @@
     "client": "cd client && npm start"
   },
   "dependencies": {
-    "concurrently": "^7.2.1",
     "mysql2": "^3.10.3"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }
