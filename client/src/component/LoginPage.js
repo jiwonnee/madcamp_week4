@@ -52,6 +52,7 @@ const LoginPage = ({ onLogin }) => {
             <input type="checkbox" id="remember" name="remember" />
             <label for="remember">Remember me</label>
           </div>
+          <div class="spacer"></div>
           <div class="forgot-pwd">
             <label><div class="alter-page">비밀번호를 잊으셨나요?</div></label>
           </div>
