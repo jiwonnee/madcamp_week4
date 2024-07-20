@@ -4,7 +4,7 @@ import './Main.css';
 import logo from './Khartes_Logo_Mini.png';
 import Nav from './Nav';
 
-const Main = () => {
+const Main = ({user}) => {
   const navigate = useNavigate();
 
   return (
