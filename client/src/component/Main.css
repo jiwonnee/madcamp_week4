@@ -1,96 +1,44 @@
-/* .toggle-button-group {
-    display: flex;
-  }
-  
-  .toggle-button {
-    border: 1px solid #ccc;
-    background: #fff;
-    padding: 10px 20px;
-    margin-top: 10px;
-    border-radius: 10px 10px 0px 0px;
-    border-bottom: 0px;
-    cursor: pointer;
-    outline: none;
-    transition: background-color 0.3s;
-  }
-  .count {
-    font-weight: bold;
-    margin-left: 5px;
-  }
-   */
+.main-container {
+  text-align: center;
+  background-color: black;
+  padding-bottom: 50px;
+}
 
-   .main-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    overflow: hidden;
-  }
-  
-  .color-block {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-image 0.3s ease-in-out, background-color 0.3s ease-in-out;
-  }
-  
-  .pink {
-    background-color: #ffb6c1;
-  }
-  
-  .orange {
-    background-color: #ffcc99;
-  }
-  
-  .green {
-    background-color: #90ee90;
-  }
-  
-  .light-green {
-    background-color: #d4ffb2;
-  }
-  
-  .pink.hovered {
-    background-image: url('../images/main1.jpeg');
-    background-size: cover;
-  }
-  
-  .orange.hovered {
-    background-image: url('../images/main2.jpeg');
-    background-size: cover;
-  }
-  
-  .green.hovered {
-    background-image: url('../images/main3.jpeg');
-    background-size: cover;
-  }
-  
-  .light-green.hovered {
-    background-image: url('../images/main4.jpeg');
-    background-size: cover;
-  }
-  
-  .label {
-    font-size: 2rem;
-    font-weight: bold;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .color-block.hovered .label {
-    opacity: 1;
-  }
-  
-  .center-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 4rem;
-    font-weight: bold;
-  }
-  
+.logo {
+  width: 150px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.appname {
+  color: white;
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 30px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.main-button {
+  background-color: #2f73cb;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.main-button:hover {
+  background-color: #218838;
+}
+
