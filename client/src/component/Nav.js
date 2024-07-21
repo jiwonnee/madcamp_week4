@@ -1,19 +1,3 @@
-// import Logo from "./Khartes_Logo_Mini.png";
-// import { Link } from 'react-router-dom';
-// import React from 'react';
-// import './Nav.css';
-
-// const Nav = () => {
-//     return (
-//         <div className='navbar'>
-//             <Link className='icon' to={'/'}><img className="logoImg" src={Logo} alt='Logo'></img></Link>
-//             <Link className='navbarMenu' to={'/'}>All-Rounder</Link>
-//         </div>
-//     )
-// }
-
-// export default Nav;
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Nav.css';
@@ -28,7 +12,9 @@ const Nav = () => {
       </div>
       <div className="nav-right">
         <div className="user-info">
-          <span className="user-name">jwon</span>
+          <div className="user-circle">
+            <span className="user-name">jwon</span>
+          </div>
           <div className="dropdown">
             <button className="dropdown-btn">▼</button>
             <div className="dropdown-content">
@@ -44,4 +30,3 @@ const Nav = () => {
 };
 
 export default Nav;
- 
