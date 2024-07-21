@@ -1,3 +1,4 @@
+//About 페이지로 변경
 import React from "react";
 import "./MainStyle.css"
 
