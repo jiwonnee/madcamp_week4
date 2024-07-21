@@ -1,6 +1,6 @@
 import React from 'react';
-import './JoinEvent.css';
-import Nav from './Nav';
+import '../css/JoinEvent.css';
+import Nav from '../Nav';
 
 const events = [
   {
@@ -59,10 +59,10 @@ const events = [
   }
 ];
 
-const JoinEvent = () => {
+const JoinEvent = ({user}) => {
   return (
     <div className="join-event-container">
-      <Nav />
+      <Nav user={user}/>
       <h1 className="title">참가하기</h1>
       <div className="event-grid">
         {events.map(event => (

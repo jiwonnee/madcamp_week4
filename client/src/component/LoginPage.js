@@ -5,6 +5,7 @@ import './css/LoginPage.css'; // 스타일을 위한 CSS 파일
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,6 +20,11 @@ const LoginPage = ({ onLogin }) => {
       });
       const data = await response.json();
       if (response.ok) {
+        if (rememberMe) {
+          localStorage.setItem('token', data.token);
+        } else {
+          sessionStorage.setItem('token', data.token);
+        }
         onLogin(data.user); 
         navigate('/main');
       } else {
@@ -52,7 +58,8 @@ const LoginPage = ({ onLogin }) => {
         </div>
         <div class="login-addons">
           <div class="remember-me">
-            <input type="checkbox" id="remember" name="remember" />
+            <input type="checkbox" id="remember" name="remember" checked={rememberMe}
+          onChange={() => setRememberMe(!rememberMe)}/>
             <label for="remember">Remember me</label>
           </div>
           <div class="spacer"></div>

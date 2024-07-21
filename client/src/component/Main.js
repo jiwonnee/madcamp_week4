@@ -6,11 +6,12 @@ import Nav from './Nav';
 
 const Main = ({user}) => {
   const navigate = useNavigate();
+  console.log(user.following_userid);
 
   return (
     <div>
       <div className="main-container">
-        <Nav />
+        <Nav user={user}/>
         <img src={logo} alt="Khartes Logo" className="logo" />
         <p className="appname">All-Rounder</p>
         <div className="button-container">

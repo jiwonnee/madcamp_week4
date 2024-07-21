@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Nav.css';
 import Logo from './Khartes_Logo_Mini.png'; // 로고 이미지 임포트
 
-const Nav = () => {
+const Nav = ({user}) => {
   return (
     <div className="nav-container">
       <div className="nav-left">
@@ -13,7 +13,7 @@ const Nav = () => {
       <div className="nav-right">
         <div className="user-info">
           <div className="user-circle">
-            <span className="user-name">jwon</span>
+            <span className="user-name">{user.following_userid}</span>
           </div>
           <div className="dropdown">
             <button className="dropdown-btn">▼</button>
