@@ -9,6 +9,7 @@ const SignupPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(JSON.stringify({ username, password, email }));
       const response = await fetch("http://localhost:3001/api/signup", {
         method: "POST",
         headers: {
