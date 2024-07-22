@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../assets/styles/css/JoinEvent.css';
-import Nav from '../Nav';
-import main1 from '../../images/main1.jpeg';
+import Nav from '../common/Nav';
+import main1 from '../../assets/images/main1.jpeg';
 
 const events = [
   {

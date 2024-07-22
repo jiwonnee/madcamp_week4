@@ -1,9 +1,9 @@
 import './App.css';
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import LoginPage from './component/LoginPage.js';
-import SignupPage from './component/SignupPage.js';
-import Main from './component/Main.js';
+import LoginPage from './component/pages/LoginPage.js';
+import SignupPage from './component/pages/SignupPage.js';
+import Main from './component/pages/Main.js';
 import UserInfo from './component/pages/userinfo.js';
 import JoinEvent from './component/pages/JoinEvent.js';
 
