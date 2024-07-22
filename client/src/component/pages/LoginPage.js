@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import './css/LoginPage.css'; // 스타일을 위한 CSS 파일
+import '../../assets/styles/css/LoginPage.css'; // 스타일을 위한 CSS 파일
 
 const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');

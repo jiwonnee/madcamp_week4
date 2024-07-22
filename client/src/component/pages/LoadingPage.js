@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './css/LoadingPage.css'; // 스타일을 위한 CSS 파일
+import '../../assets/styles/css/LoadingPage.css'; // 스타일을 위한 CSS 파일
 
 const LoadingPage = ({ onAnimationEnd }) => {
 
