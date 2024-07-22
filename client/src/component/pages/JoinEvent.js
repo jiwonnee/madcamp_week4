@@ -1,8 +1,15 @@
 import React from 'react';
-import '../../assets/styles/css/JoinEvent.css'; 
+import { useNavigate } from 'react-router-dom';
+import '../../assets/styles/css/JoinEvent.css';
 import Nav from '../common/Nav';
 
 const JoinEvent = ({ user, events }) => {
+  const navigate = useNavigate();
+
+  const handleEventClick = (id) => {
+    navigate(`/event/${id}/detail`);
+  };
+
   return (
     <div>
       <Nav user={user} />
@@ -10,10 +17,9 @@ const JoinEvent = ({ user, events }) => {
         <h1 className="title">참가하기</h1>
         <div className="event-grid">
           {events.map(event => (
-            <div className="event-card" key={event.id}>
+            <div className="event-card" key={event.id} onClick={() => handleEventClick(event.id)}>
               <div className="event-image">
                 <img src={event.image} alt="event" />
-                <div className="event-status">{event.status}</div>
               </div>
               <div className="event-details">
                 <p>날짜: {event.date}</p>
