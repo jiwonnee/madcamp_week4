@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import '../../assets/styles/css/LoginPage.css'; // 스타일을 위한 CSS 파일
 
@@ -6,7 +6,30 @@ const LoginPage = ({ onLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [user, setUser] = useState(null); 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) {
+      fetch('http://localhost:3001/api/verify', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.user) {
+            setUser(data.user);
+            console.log(data.user);
+            navigate('/main', { state: { user: data.user } });
+          }
+        })
+        .catch(error => {
+          console.error('Error verifying token:', error);
+        });
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
