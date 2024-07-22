@@ -8,19 +8,19 @@
   padding: 2rem; /* 여백 추가 */
 }
 
-form {
+.login-form {
   background: transparent; /* 투명 배경 */
   width: 100%; /* 전체 너비 */
   padding: 2rem;
   color: #fff; /* 밝은 글씨 */
   animation: fadeIn 1s forwards;
 }
-form label {
+.login-form label {
   display: block;
   margin-bottom: 0.5rem;
   color: #fff;
 }
-form input {
+.login-form input {
   width: 100%; /* 전체 너비 */
   padding: 1rem; /* 더 큰 패딩 */
   margin-bottom: 1rem;
