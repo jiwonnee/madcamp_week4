@@ -9,27 +9,27 @@ const LoginPage = ({ onLogin }) => {
   const [user, setUser] = useState(null); 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (token) {
-      fetch('http://localhost:3001/api/verify', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      })
-        .then(response => response.json())
-        .then(data => {
-          if (data.user) {
-            setUser(data.user);
-            console.log(data.user);
-            navigate('/main', { state: { user: data.user } });
-          }
-        })
-        .catch(error => {
-          console.error('Error verifying token:', error);
-        });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  //   if (token) {
+  //     fetch('http://localhost:3001/api/verify', {
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,
+  //       },
+  //     })
+  //       .then(response => response.json())
+  //       .then(data => {
+  //         if (data.user) {
+  //           setUser(data.user);
+  //           console.log(data.user);
+  //           navigate('/main', { state: { user: data.user } });
+  //         }
+  //       })
+  //       .catch(error => {
+  //         console.error('Error verifying token:', error);
+  //       });
+  //   }
+  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
