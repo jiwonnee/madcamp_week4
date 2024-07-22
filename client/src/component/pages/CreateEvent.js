@@ -40,6 +40,8 @@ const CreateEvent = ({ user, addEvent }) => {
     formData.append("details", newEvent["details"]);
     formData.append("startDate", newEvent["date"]);
     formData.append("endDate", newEvent["end-date"]);
+    formData.append("roundStartDate", newEvent["round-date"]);
+    formData.append("roundEndDate", newEvent["round-end-date"]);
     formData.append("location", newEvent["location"]);
     formData.append("maxPeople", newEvent["participants"]);
     formData.append("currentPeople", 0); // 초기값을 0으로 설정
@@ -49,7 +51,6 @@ const CreateEvent = ({ user, addEvent }) => {
     }
 
     try {
-
       const response = await fetch(
         "http://localhost:3001/api/tournament/create",
         {
@@ -99,7 +100,7 @@ const CreateEvent = ({ user, addEvent }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="date">시작 날짜:</label>
+            <label htmlFor="date">접수 시작 날짜:</label>
             <input
               type="date"
               id="date"
@@ -110,12 +111,34 @@ const CreateEvent = ({ user, addEvent }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="end-date">종료 날짜:</label>
+            <label htmlFor="end-date">접수 종료 날짜:</label>
             <input
               type="date"
               id="end-date"
               name="end-date"
               value={eventData.end_date}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="date">대회 시작 날짜:</label>
+            <input
+              type="date"
+              id="round-date"
+              name="round-date"
+              value={eventData.round_date}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="end-date">대회 종료 날짜:</label>
+            <input
+              type="date"
+              id="round-end-date"
+              name="round-end-date"
+              value={eventData.round_end_date}
               onChange={handleChange}
               required
             />

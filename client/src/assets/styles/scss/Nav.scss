@@ -13,9 +13,9 @@ $white: #fff;
   padding: 20px 20px;
 
   box-sizing: inherit;
-    transition-property: all;
-    transition-duration: .6s;
-    transition-timing-function: ease;
+  transition-property: all;
+  transition-duration: .6s;
+  transition-timing-function: ease;
 }
 
 .nav-left {
@@ -88,14 +88,15 @@ $white: #fff;
 }
 
 .dropdown {
-    width: 100px;
-    margin-left: 10px;
+  width: 100px;
+  margin-left: 10px;
 }
 
 .dropdown-btn {
   background: darken(#000, 1.5%);
   font-weight: 100;
   height: 45px; // 버튼 높이를 명시적으로 설정
+  transition: background 280ms ease-in-out, font-weight 280ms ease-in-out, letter-spacing 280ms ease-in-out;
 
   svg {
     height: 100%; // SVG 높이를 버튼 높이에 맞춤
@@ -118,6 +119,7 @@ $white: #fff;
   background: rgba(#000, 0);
   font-weight: 900;
   letter-spacing: 1px;
+  transition: background 280ms ease-in-out, font-weight 280ms ease-in-out, letter-spacing 280ms ease-in-out;
 
   rect {
     stroke-width: 5;
@@ -154,7 +156,8 @@ $white: #fff;
 }
 
 .btn-2 {
-    letter-spacing: 0;
+  letter-spacing: 0;
+  transition: letter-spacing 280ms ease-in-out, border 280ms ease-in-out;
 }
 
 .btn-2:hover,
@@ -179,7 +182,7 @@ $white: #fff;
 .btn-2:hover:before {
   backface-visibility: hidden;
   border-color: #fff;
-  transition: width 350ms ease-in-out;
+  transition: width 350ms ease-in-out, border-color 350ms ease-in-out;
   width: 70%;
 }
 
