@@ -90,6 +90,7 @@
   background: black;
   font-weight: 100;
   height: 45px;
+  transition: background 280ms ease-in-out, font-weight 280ms ease-in-out, letter-spacing 280ms ease-in-out;
 }
 .dropdown-btn svg {
   height: 100%;
@@ -110,6 +111,7 @@
   background: rgba(0, 0, 0, 0);
   font-weight: 900;
   letter-spacing: 1px;
+  transition: background 280ms ease-in-out, font-weight 280ms ease-in-out, letter-spacing 280ms ease-in-out;
 }
 .dropdown-btn:hover rect {
   stroke-width: 5;
@@ -146,6 +148,7 @@
 
 .btn-2 {
   letter-spacing: 0;
+  transition: letter-spacing 280ms ease-in-out, border 280ms ease-in-out;
 }
 
 .btn-2:hover,
@@ -170,7 +173,7 @@
 .btn-2:hover:before {
   backface-visibility: hidden;
   border-color: #fff;
-  transition: width 350ms ease-in-out;
+  transition: width 350ms ease-in-out, border-color 350ms ease-in-out;
   width: 70%;
 }
 

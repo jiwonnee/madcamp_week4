@@ -1,12 +1,55 @@
-.event1-container, .event2-container, .event3-container, .event4-container {
-  max-width: 800px;
-  margin: 0 auto;
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.event1-container {
+  width: 33.33%; /* 화면 너비의 1/3을 차지하도록 설정 */
+  margin: 0; /* 왼쪽에 붙이기 위해 margin을 0으로 설정 */
   padding: 20px;
   background-color: #f9f9f9;
-  
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top: 40px;
-  margin-bottom: 40px;
+}
+
+.right-content {
+  width: 60%; /* 나머지 오른쪽 공간을 차지하도록 설정 */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+}
+
+.right-content h3 {
+  margin-bottom: 10px; /* h3와 다음 요소 간의 마진 조정 */
+}
+
+.right-content .button-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px; /* 버튼 컨테이너와 다음 h3 간의 마진 조정 */
+}
+
+.right-content button {
+  min-width: 40px;
+  height: 40px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  white-space: nowrap;
+}
+
+.right-content button:hover {
+  background-color: #0056b3;
 }
 
 .event-nav {
@@ -57,8 +100,8 @@
 }
 
 .event-image img {
-  width: 100%;
-  height: 100%;
+  width: 100%; /* 이미지가 container의 너비에 맞게 설정 */
+  height: auto; /* 이미지의 비율을 유지하며 높이를 자동으로 설정 */
   object-fit: cover;
 }
 

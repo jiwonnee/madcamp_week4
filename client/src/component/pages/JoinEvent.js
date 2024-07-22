@@ -49,6 +49,37 @@ const JoinEvent = ({ user }) => {
     navigate(`/event/${id}/detail`, {state: {user: user, events: events}});
   };
 
+  const handleJoinClick = async (eventId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/tournament/apply`, {
+        method: 'POST',  // GET -> POST로 변경
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tournament_id: eventId, user_id: user.id }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to apply participation');
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+      alert('접수 성공');  // 성공 알림
+      // 추가적인 로직 처리 (예: 알림 표시 등)
+    } catch (err) {
+      console.error(err.message);
+      alert('접수 실패: ' + err.message);  // 실패 알림
+      // 에러 처리 (예: 알림 표시 등)
+    }
+  };
+
+
+  const isBetweenDates = (startDate, endDate) => {
+    const today = new Date();
+    return today >= new Date(startDate) && today <= new Date(endDate);
+  };
+
   return (
     <div>
       <Nav user={user} />
@@ -59,13 +90,16 @@ const JoinEvent = ({ user }) => {
             <div className="event-card" key={event.id} onClick={() => handleEventClick(event.id)}>
               <div className="event-image">
                 <img src={event.image_url} alt="event" />
-                <div className="event-status">{event.isOpen? "모집중" : "종료됨"}</div>
+                <div className="event-status">{isBetweenDates(event.start_date, event.end_date) ? "모집중" : "접수 종료됨"}</div>
               </div>
               <div className="event-details">
-                <p>날짜: {event.start_date}</p>
+                <p>이름: {event.name}</p>
+                <p>접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
+                <p>대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>
                 <p>위치: {event.Location}</p>
-                <p>모집인원: {event.maxPeople}</p>
+                <p>모집인원: {event.currentPeople}/{event.maxPeople}</p>
                 <p>기타 정보: {event.description}</p>
+                {isBetweenDates(event.start_date, event.end_date) && <button onClick={(e) => {e.stopPropagation(); handleJoinClick(event.id);}} className='event-participate'>참가신청</button>}
               </div>
             </div>
           ))}
@@ -76,3 +110,7 @@ const JoinEvent = ({ user }) => {
 };
 
 export default JoinEvent;
+
+
+//http://localhost:3001/api/tournament/${eventId}/join 디자인해줘
+//TournamentUser 테이블에 state는 2로, 
