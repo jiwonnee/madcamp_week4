@@ -5,6 +5,8 @@ import LoginPage from './component/pages/LoginPage.js';
 import SignupPage from './component/pages/SignupPage.js';
 import Main from './component/pages/Main.js';
 import UserInfo from './component/pages/UserInfo.js';
+import JoinInfo from './component/pages/JoinInfo.js';
+import Notice from './component/pages/Notice.js';
 import JoinEvent from './component/pages/JoinEvent.js';
 import CreateEvent from './component/pages/CreateEvent.js';
 import Event1 from './component/pages/Event1.js';
@@ -123,6 +125,14 @@ function App() {
         <Route
           path="/userinfo"
           element={user ? <UserInfo user={user} /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/joininfo"
+          element={user ? <JoinInfo user={user} /> : <Navigate to="/" />} // JoinInfo 경로 추가
+        />
+        <Route
+          path="/notice"
+          element={user ? <Notice user={user} /> : <Navigate to="/" />} // Notice 경로 추가
         />
         <Route
           path="/join_event"
