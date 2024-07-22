@@ -24,6 +24,19 @@
   overflow: hidden;
   text-align: left;
   position: relative;
+  width: 100%;
+  height: 5;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.event-card:active {
+  transform: scale(0.95);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.event-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .event-image {
@@ -72,4 +85,11 @@
 
 .event-participate:hover {
   background-color: #0056b3; /* 호버 시 배경색 */
+}
+
+.image-preview {
+  width: 100%;
+  max-width: 150px;
+  margin-top: 10px;
+  border-radius: 5px;
 }
