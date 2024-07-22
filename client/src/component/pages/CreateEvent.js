@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../css/CreateEvent.css';
+import '../../assets/styles/css/CreateEvent.css'; 
 import Nav from '../common/Nav';
 
 const CreateEvent = ({ user, addEvent }) => {

@@ -1,7 +1,7 @@
 .join-event-container {
   text-align: center;
-  max-width: 1200px; /* 최대 너비 설정 */
-  margin: 0 auto; /* 중앙 배치 */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .title {
