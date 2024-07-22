@@ -7,6 +7,7 @@ const JoinEvent = ({ user }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -42,6 +43,11 @@ const JoinEvent = ({ user }) => {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  const handleEventClick = (id) => {
+    console.log(events);
+    navigate(`/event/${id}/detail`, {state: {user: user, events: events}});
+  };
 
   return (
     <div>

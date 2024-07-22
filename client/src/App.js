@@ -81,19 +81,19 @@ function App() {
         />
         <Route
           path="/event/:id/detail"
-          element={user ? <Event1 user={user} events={events} /> : <Navigate to="/" />}
+          element={user ? <Event1 user={user} /> : <Navigate to="/" />}
         />
-      <Route
+        <Route
           path="/event/:id/participants"
-          element={user ? <Event2 user={user} events={events} /> : <Navigate to="/" />}
+          element={user ? <Event2 user={user} /> : <Navigate to="/" />}
         />
         <Route
           path="/event/:id/tournament"
-          element={user ? <Event3 user={user} events={events} /> : <Navigate to="/" />}
+          element={user ? <Event3 user={user} /> : <Navigate to="/" />}
         />
         <Route
           path="/event/:id/notice"
-          element={user ? <Event4 user={user} events={events} /> : <Navigate to="/" />}
+          element={user ? <Event4 user={user} /> : <Navigate to="/" />}
         />
       </Routes>
     </div>
