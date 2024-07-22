@@ -5,17 +5,27 @@ import Nav from "../common/Nav";
 
 const CreateEvent = ({ user, addEvent }) => {
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [eventData, setEventData] = useState({
     date: "",
     location: "",
     participants: "",
     details: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    setImage(file);
+    
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleChange = (e) => {
@@ -77,6 +87,7 @@ const CreateEvent = ({ user, addEvent }) => {
       <Nav user={user} />
       <h1 className="title">이벤트 개최하기</h1>
       <div className="create-event-container">
+        {successMessage && <div className="success-message">{successMessage}</div>}
         <form className="event-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="imageUpload">사진 업로드:</label>
