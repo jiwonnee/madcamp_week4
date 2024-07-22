@@ -61,7 +61,7 @@ const LoginPage = ({ onLogin }) => {
 
   return (
     <div className="login-page">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-form">
         <h1>🏆All-Rounder Login</h1>
         <div class="id-field">
           <label>All-Rounder ID</label>
