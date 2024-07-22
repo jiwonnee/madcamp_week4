@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../assets/styles/css/Nav.css';
-import Logo from './Khartes_Logo_Mini.png'; // 로고 이미지 임포트
+import Logo from '../../assets/images/Khartes_Logo_Mini.png'; // 로고 이미지 임포트
 
 const Nav = ({user}) => {
   return (
