@@ -31,7 +31,7 @@ const SignupPage = () => {
 
   return (
     <div className="signup-page">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className='login-form'>
         <h1>새 계정 만들기</h1>
         <div className="field">
           <label>Username</label>
