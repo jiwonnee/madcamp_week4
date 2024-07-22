@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../assets/styles/css/Nav.css";
-import Logo from "../../assets/images/Khartes_Logo_Mini.png"; // 로고 이미지 임포트
+import Logo from "../../assets/images/Khartes_Logo_Mini.png";
 
 const Nav = ({ user }) => {
   return (
     <div className="nav-container">
       <div className="nav-left">
-        <Link className="icon" to={"/"}>
+        <Link className="icon" to={"/main"}>
           <img className="logoImg" src={Logo} alt="Logo" />
         </Link>
-        <Link className="app-title" to={"/"}>
+        <Link className="app-title" to={"/main"}>
           All-Rounder
         </Link>
       </div>

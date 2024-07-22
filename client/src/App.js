@@ -7,6 +7,10 @@ import Main from './component/pages/Main.js';
 import UserInfo from './component/pages/UserInfo.js';
 import JoinEvent from './component/pages/JoinEvent.js';
 import CreateEvent from './component/pages/CreateEvent.js';
+import Event1 from './component/pages/Event1.js';
+import Event2 from './component/pages/Event2.js';
+import Event3 from './component/pages/Event3.js';
+import Event4 from './component/pages/Event4.js';
 import main1 from './assets/images/main1.jpeg';
 
 const initialEvents = [
@@ -127,6 +131,22 @@ function App() {
         <Route
           path="/create_event"
           element={user ? <CreateEvent user={user} addEvent={addEvent} /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/event/:id/detail"
+          element={user ? <Event1 user={user} events={events} /> : <Navigate to="/" />}
+        />
+      <Route
+          path="/event/:id/participants"
+          element={user ? <Event2 user={user} events={events} /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/event/:id/tournament"
+          element={user ? <Event3 user={user} events={events} /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/event/:id/notice"
+          element={user ? <Event4 user={user} events={events} /> : <Navigate to="/" />}
         />
       </Routes>
     </div>
