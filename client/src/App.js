@@ -13,74 +13,15 @@ import Event1 from './component/pages/Event1.js';
 import Event2 from './component/pages/Event2.js';
 import Event3 from './component/pages/Event3.js';
 import Event4 from './component/pages/Event4.js';
-import main1 from './assets/images/main1.jpeg';
-
-const initialEvents = [
-  {
-    id: 1,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-01',
-    location: '서울',
-    participants: '10/20',
-    details: '기타 정보...'
-  },
-  {
-    id: 2,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-05',
-    location: '부산',
-    participants: '5/15',
-    details: '기타 정보...'
-  },
-  {
-    id: 3,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-10',
-    location: '대구',
-    participants: '8/20',
-    details: '기타 정보...'
-  },
-  {
-    id: 4,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-15',
-    location: '광주',
-    participants: '12/25',
-    details: '기타 정보...'
-  },
-  {
-    id: 5,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-20',
-    location: '대전',
-    participants: '7/10',
-    details: '기타 정보...'
-  },
-  {
-    id: 6,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-25',
-    location: '울산',
-    participants: '15/30',
-    details: '기타 정보...'
-  }
-];
 
 function App() {
   const [user, setUser] = useState(null);
-  const [events, setEvents] = useState(initialEvents);
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:3001/api/verify', {
+      fetch('http://localhost:3001/api/auth/verify', {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -109,10 +50,6 @@ function App() {
     setUser(null);
   };
 
-  const addEvent = (newEvent) => {
-    setEvents((prevEvents) => [...prevEvents, newEvent]);
-  };
-
   return (
     <div className="app-container">
       <Routes>
@@ -136,11 +73,11 @@ function App() {
         />
         <Route
           path="/join_event"
-          element={user ? <JoinEvent user={user} events={events} /> : <Navigate to="/" />}
+          element={user ? <JoinEvent user={user} /> : <Navigate to="/" />}
         />
         <Route
           path="/create_event"
-          element={user ? <CreateEvent user={user} addEvent={addEvent} /> : <Navigate to="/" />}
+          element={user ? <CreateEvent user={user} /> : <Navigate to="/" />}
         />
         <Route
           path="/event/:id/detail"

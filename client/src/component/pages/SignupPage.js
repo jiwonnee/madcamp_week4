@@ -10,7 +10,7 @@ const SignupPage = () => {
     e.preventDefault();
     try {
       console.log(JSON.stringify({ username, password, email }));
-      const response = await fetch("http://localhost:3001/api/signup", {
+      const response = await fetch("http://localhost:3001/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../../assets/styles/css/CreateEvent.css'; 
-import Nav from '../common/Nav';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../assets/styles/css/CreateEvent.css";
+import Nav from "../common/Nav";
 
 const CreateEvent = ({ user, addEvent }) => {
   const [image, setImage] = useState(null);
   const [eventData, setEventData] = useState({
-    date: '',
-    location: '',
-    participants: '',
-    details: ''
+    date: "",
+    location: "",
+    participants: "",
+    details: "",
   });
 
   const navigate = useNavigate();
@@ -22,19 +22,54 @@ const CreateEvent = ({ user, addEvent }) => {
     const { name, value } = e.target;
     setEventData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newEvent = {
       ...eventData,
-      image: URL.createObjectURL(image),
-      status: '모집 중'
+      image: image,
+      status: "모집 중",
     };
-    addEvent(newEvent);
-    navigate('/join_event');
+
+    const formData = new FormData();
+    formData.append("name", newEvent["name"]);
+    formData.append("details", newEvent["details"]);
+    formData.append("startDate", newEvent["date"]);
+    formData.append("endDate", newEvent["end-date"]);
+    formData.append("location", newEvent["location"]);
+    formData.append("maxPeople", newEvent["participants"]);
+    formData.append("currentPeople", 0); // 초기값을 0으로 설정
+    formData.append("createdBy", user.id);
+    if (newEvent.image) {
+      formData.append("image", newEvent.image);
+    }
+
+    try {
+
+      const response = await fetch(
+        "http://localhost:3001/api/tournament/create",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const result = await response.json();
+      if (response.ok) {
+        console.log("Tournament created successfully:", result);
+        navigate('/main', { state: { user: user } })
+      } else {
+        console.error("Error creating tournament:", result.message);
+        // 실패 시 필요한 작업 수행
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // 예외 발생 시 필요한 작업 수행
+    }
   };
 
   return (
@@ -45,25 +80,81 @@ const CreateEvent = ({ user, addEvent }) => {
         <form className="event-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="imageUpload">사진 업로드:</label>
-            <input type="file" id="imageUpload" accept="image/*" onChange={handleImageChange} />
+            <input
+              type="file"
+              id="imageUpload"
+              accept="image/*"
+              onChange={handleImageChange}
+            />
           </div>
           <div className="form-group">
-            <label htmlFor="date">날짜:</label>
-            <input type="date" id="date" name="date" value={eventData.date} onChange={handleChange} required />
+            <label htmlFor="name">이벤트 이름:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={eventData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="date">시작 날짜:</label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              value={eventData.date}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="end-date">종료 날짜:</label>
+            <input
+              type="date"
+              id="end-date"
+              name="end-date"
+              value={eventData.end_date}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="location">위치:</label>
-            <input type="text" id="location" name="location" value={eventData.location} onChange={handleChange} required />
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={eventData.location}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="participants">모집인원:</label>
-            <input type="text" id="participants" name="participants" value={eventData.participants} onChange={handleChange} required />
+            <input
+              type="text"
+              id="participants"
+              name="participants"
+              value={eventData.participants}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="details">기타 정보:</label>
-            <textarea id="details" name="details" value={eventData.details} onChange={handleChange} required />
+            <textarea
+              id="details"
+              name="details"
+              value={eventData.details}
+              onChange={handleChange}
+              required
+            />
           </div>
-          <button type="submit" className="submit-button">업로드하기</button>
+          <button type="submit" className="submit-button">
+            업로드하기
+          </button>
         </form>
       </div>
     </div>
