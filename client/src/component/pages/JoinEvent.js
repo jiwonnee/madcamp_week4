@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/JoinEvent.css';
+import '../../assets/styles/css/JoinEvent.css';
 import Nav from '../Nav';
 
 const events = [

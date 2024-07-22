@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './css/SignupPage.css'; // 스타일을 위한 CSS 파일
+import '../../assets/styles/css/SignupPage.css'; // 스타일을 위한 CSS 파일
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');

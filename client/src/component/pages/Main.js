@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Main.css';
-import logo from './Khartes_Logo_Mini.png';
-import Nav from './Nav';
+import '../../assets/styles/css/Main.css';
+import logo from '../../assets/images/Khartes_Logo_Mini.png';
+import Nav from '../common/Nav';
 
 const Main = ({user}) => {
   const navigate = useNavigate();
