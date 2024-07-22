@@ -1,69 +1,11 @@
 import React from 'react';
-import '../../assets/styles/css/JoinEvent.css';
-import Nav from '../Nav';
-import main1 from '../../images/main1.jpeg';
+import '../css/JoinEvent.css';
+import Nav from '../common/Nav';
 
-const events = [
-  {
-    id: 1,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-01',
-    location: '서울',
-    participants: '10/20',
-    details: '기타 정보...'
-  },
-  {
-    id: 2,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-05',
-    location: '부산',
-    participants: '5/15',
-    details: '기타 정보...'
-  },
-  {
-    id: 3,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-10',
-    location: '대구',
-    participants: '8/20',
-    details: '기타 정보...'
-  },
-  {
-    id: 4,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-15',
-    location: '광주',
-    participants: '12/25',
-    details: '기타 정보...'
-  },
-  {
-    id: 5,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-20',
-    location: '대전',
-    participants: '7/10',
-    details: '기타 정보...'
-  },
-  {
-    id: 6,
-    image: main1,
-    status: '모집 중',
-    date: '2024-08-25',
-    location: '울산',
-    participants: '15/30',
-    details: '기타 정보...'
-  }
-];
-
-const JoinEvent = ({user}) => {
+const JoinEvent = ({ user, events }) => {
   return (
     <div>
-      <Nav user={user}/>
+      <Nav user={user} />
       <div className="join-event-container">
         <h1 className="title">참가하기</h1>
         <div className="event-grid">
