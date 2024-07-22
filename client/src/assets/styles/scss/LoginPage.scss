@@ -13,22 +13,23 @@ form {
   padding: 2rem;
   color: #fff; /* 밝은 글씨 */
   animation: fadeIn 1s forwards;
-}
 
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-input {
-  width: 100%; /* 전체 너비 */
-  padding: 1rem; /* 더 큰 패딩 */
-  margin-bottom: 1rem;
-  background-color: #000; /* 검은색 배경 */
-  color: #fff; /* 밝은 글씨 */
-  border: 1px solid #444; /* 어두운 테두리 */
-  border-radius: 5px;
-  font-size: 1.2rem; /* 더 큰 폰트 크기 */
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #fff;
+  }
+  
+  input {
+    width: 100%; /* 전체 너비 */
+    padding: 1rem; /* 더 큰 패딩 */
+    margin-bottom: 1rem;
+    background-color: #000; /* 검은색 배경 */
+    color: #fff; /* 밝은 글씨 */
+    border: 1px solid #444; /* 어두운 테두리 */
+    border-radius: 5px;
+    font-size: 1.2rem; /* 더 큰 폰트 크기 */
+  }
 }
 
 @mixin btn-border-drawing(
@@ -117,10 +118,6 @@ button {
 
 .id-field {
   width: 400px;
-
-  input {
-
-  }
 }
 
 .password-field {
@@ -140,7 +137,7 @@ button {
 }
 
 :root {
-  --element-width: 434px; /* 기본값 설정 */
+  --element-width: 400px; /* 기본값 설정 */
 }
 
 .login-addons {

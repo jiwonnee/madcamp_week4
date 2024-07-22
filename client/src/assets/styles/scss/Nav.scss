@@ -1,11 +1,15 @@
-@charset "UTF-8";
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
+
+//colors
+$red: #E1332D;
+$white: #fff;
+
 * {
-  box-sizing: inherit;
-  transition-property: all;
-  transition-duration: 0.6s;
-  transition-timing-function: ease;
-}
+    box-sizing: inherit;
+    transition-property: all;
+    transition-duration: .6s;
+    transition-timing-function: ease;
+  }
 
 .nav-container {
   display: flex;
@@ -61,6 +65,7 @@
   border-radius: 15px; /* 타원형 효과 */
 }
 
+//default button
 .btn {
   color: #fff;
   cursor: pointer;
@@ -72,53 +77,56 @@
   text-decoration: none;
   text-transform: uppercase;
   width: 100%;
-  margin: 0;
-  height: 45px;
-}
-@media (min-width: 600px) {
-  .btn {
-    margin: 0;
+  margin: 0; // 마진을 0으로 설정하여 여백 제거
+  height: 45px; // 버튼 높이를 명시적으로 설정
+
+  @media (min-width: 600px) {
+    margin: 0; // 미디어 쿼리에서도 마진을 0으로 설정
   }
-}
-.btn:hover {
-  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .dropdown {
-  width: 100px;
-  margin-left: 10px;
+    width: 100px;
+    margin-left: 10px;
 }
 
 .dropdown-btn {
-  background: black;
+  background: darken(#000, 1.5%);
   font-weight: 100;
-  height: 45px;
-}
-.dropdown-btn svg {
-  height: 100%;
-  width: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
-}
-.dropdown-btn rect {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 2;
-  stroke-dasharray: 422, 0;
-  transition: all 0.35s linear;
+  height: 45px; // 버튼 높이를 명시적으로 설정
+
+  svg {
+    height: 100%; // SVG 높이를 버튼 높이에 맞춤
+    width: 100%; 
+    left: 0;
+    position: absolute;
+    top: 0;
+  }
+
+  rect {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2;
+    stroke-dasharray: 422, 0;
+    transition: all 0.35s linear;
+  }
 }
 
 .dropdown-btn:hover {
-  background: rgba(0, 0, 0, 0);
+  background: rgba(#000, 0);
   font-weight: 900;
   letter-spacing: 1px;
-}
-.dropdown-btn:hover rect {
-  stroke-width: 5;
-  stroke-dasharray: 15, 310;
-  stroke-dashoffset: 48;
-  transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+
+  rect {
+    stroke-width: 5;
+    stroke-dasharray: 15, 310;
+    stroke-dashoffset: 48;
+    transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+  }
 }
 
 .dropdown-content {
@@ -148,7 +156,7 @@
 }
 
 .btn-2 {
-  letter-spacing: 0;
+    letter-spacing: 0;
 }
 
 .btn-2:hover,
@@ -159,7 +167,7 @@
 .btn-2:after,
 .btn-2:before {
   backface-visibility: hidden;
-  border: 1px solid rgba(255, 255, 255, 0);
+  border: 1px solid rgba(#fff, 0);
   bottom: 0px;
   content: " ";
   display: block;
@@ -182,5 +190,3 @@
   top: 0;
   width: 70%;
 }
-
-/*# sourceMappingURL=Nav.css.map */
