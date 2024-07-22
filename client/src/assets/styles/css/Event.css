@@ -1,9 +1,8 @@
 .event1-container, .event2-container, .event3-container, .event4-container {
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
-  
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-top: 40px;
   margin-bottom: 40px;
