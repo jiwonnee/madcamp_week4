@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-route
 import LoginPage from './component/pages/LoginPage.js';
 import SignupPage from './component/pages/SignupPage.js';
 import Main from './component/pages/Main.js';
-import UserInfo from './component/pages/userinfo.js';
+import UserInfo from './component/pages/UserInfo.js';
 import JoinEvent from './component/pages/JoinEvent.js';
 import CreateEvent from './component/pages/CreateEvent.js';
 import main1 from './assets/images/main1.jpeg';
