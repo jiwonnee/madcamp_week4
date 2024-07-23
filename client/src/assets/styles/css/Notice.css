@@ -1,24 +1,63 @@
 .notice-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 40px;
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    color: black;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  .notice-content {
-    font-size: 18px;
-    color: black;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+}
+
+.notice-header {
+  display: flex;
+  align-items: center;
+  font-size: 2.4em;
+  margin-bottom: 40px;
+}
+
+.notice-header .fa-bullhorn {
+  font-size: 0.7em;
+  margin-right: 8px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.notice-content {
+  font-size: 24px;
+  color: black;
+}
+
+.notice-list {
+  padding: 0;
+  list-style-type: none;
+}
+
+.notice-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 18px;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+}
+
+.notice-item + .notice-item {
+  border-top: 1px solid #ddd;
+}
+
+.notice-item:last-child {
+  border-bottom: none;
+}
+
+.notice-icon {
+  margin-right: 10px;
+  color: #007bff; 
+  vertical-align: middle;
+}

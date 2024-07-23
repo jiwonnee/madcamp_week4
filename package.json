@@ -8,8 +8,15 @@
     "client": "cd client && npm start"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "framer-motion": "^11.3.8",
     "mysql2": "^3.10.3",
-    "node-sass": "^9.0.0"
+    "node-sass": "^9.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-intersection-observer": "^9.13.0",
+    "react-router-dom": "^6.25.1"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

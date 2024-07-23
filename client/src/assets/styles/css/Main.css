@@ -1,9 +1,66 @@
- .main-container {
+.body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  margin-right: 20px;
+}
+
+.navbar-title {
+  font-size: 20px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-link {
+  margin-left: 20px;
+  color: white;
+  text-decoration: none;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   background-color: black;
-  padding-bottom: 50px;
-  padding-top: 0;
-  margin-top: 0; 
+  height: 100vh;
+  color: white;
+}
+
+.intro-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease-out;
+  transform: translateY(-50px);
 }
 
 .logo {
@@ -23,48 +80,56 @@
 .button-container {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 70px;
   margin-bottom: 10px;
 }
 
 .main-button {
-  /* background-color: #2850a7;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 4px; */
   width: 300px;
   height: 50px;
 }
 
-.main-button:hover {
-  /* background-color: #1a397e; */
-}
-
 .bottom-space {
-  height: 100px;
+  height: 50px; /* Reduced the height of the bottom space */
   background-color: black;
 }
 
 .about-section {
   background-color: white;
+  padding: 100px 20px; /* Add padding to make the white section bigger */
   color: black;
-  padding: 20px;
-  border: none; 
+  opacity: 0;
+  transform: translateY(100px); /* Adjusted for a smoother transition */
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  padding-bottom: 240px;
+  padding-top: 220px;
 }
 
-.about-section h2 {
-  margin: 0;
-  padding-bottom: 10px;
-  border-bottom: none;
+.about-section.fade-in {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.about-section p {
-  margin: 0;
+.about-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 100px; /* Add top padding to separate from the previous section */
+}
+
+.about-title {
+  font-size: 48px; /* Increased font size */
+  font-weight: bold;
+  flex: 1;
+  padding-top: 80px;;
+}
+
+.about-description {
+  flex: 2;
+  font-size: 18px;
+  line-height: 1.6;
+  margin-left: 20px; /* Add margin left to separate from title */
 }
