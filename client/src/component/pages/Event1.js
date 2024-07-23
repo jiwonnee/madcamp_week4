@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import "../../assets/styles/css/Event.css";
 import Nav from "../common/Nav";
 import EventNav from "../common/EventNav";
+import { PlayerProvider } from "../contexts/PlayerInfo";
+import { RoundProvider, useRound } from "../contexts/RoundInfo";
 
 const Event1 = () => {
   const { id } = useParams();
@@ -16,43 +18,62 @@ const Event1 = () => {
     return <div>이벤트를 찾을 수 없습니다.</div>;
   }
 
-  const roundButtons = Array.from({ length: event.round_num }, (_, index) => (
-    <button key={index}>R{index + 1}</button>
-  ));
-
   const handleManageApplicationsClick = () => {
-    navigate(`/event/${event.id}/detail/applications`, { state: { user, events } });
+    navigate(`/event/${event.id}/detail/applications`, {
+      state: { user, events },
+    });
   };
 
-  const handleJoinClick = async (eventId) => {
-    try {
-      const response = await fetch(`http://localhost:3001/api/tournament/apply`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ tournament_id: eventId, user_id: user.id }),
-      });
+  return (
+    <PlayerProvider tournament_id={id}>
+      <RoundProvider tournament_id={id}>
+        <Event1Content
+          user={user}
+          events={events}
+          event={event}
+          handleManageApplicationsClick={handleManageApplicationsClick}
+        />
+      </RoundProvider>
+    </PlayerProvider>
+  );
+};
 
-      if (!response.ok) {
-        throw new Error('Failed to apply participation');
+const Event1Content = ({
+  user,
+  events,
+  event,
+  handleManageApplicationsClick,
+}) => {
+  const { addRound, rounds } = useRound();
+  const [roundButtons, setRoundButtons] = useState([]);
+  const [selectedRound, setSelectedRound] = useState(null);
+
+  useEffect(() => {
+    const fetchRoundCount = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3001/api/tournament/${event.id}`
+        );
+        const data = await response.json();
+        const roundCount = data.round_cnt;
+        const buttons = Array.from({ length: roundCount }, (_, index) => (
+          <button key={index} className="round-btn" onClick={() => setSelectedRound(index + 1)}>R{index + 1}</button>
+        ));
+        setRoundButtons(buttons);
+      } catch (error) {
+        console.error("Error fetching round count:", error);
       }
+    };
 
-      const data = await response.json();
-      console.log(data.message);
-      alert('참가 신청 성공'); // 성공 알림
-      // 추가적인 로직 처리 (예: 알림 표시 등)
-    } catch (err) {
-      console.error(err.message);
-      alert('참가 신청 실패: ' + err.message); // 실패 알림
-      // 에러 처리 (예: 알림 표시 등)
-    }
+    fetchRoundCount();
+  }, [event.id, rounds]);
+
+  const handleNextRoundStart = async () => {
+    await addRound();
   };
 
-  const isBetweenDates = (startDate, endDate) => {
-    const today = new Date();
-    return today >= new Date(startDate) && today <= new Date(endDate);
-  };
+
+  console.log(rounds);
 
   return (
     <div>
@@ -70,7 +91,6 @@ const Event1 = () => {
               <p>위치: {event.Location}</p>
               <p>모집인원: {event.currentPeople}/{event.maxPeople}</p>
               <p>기타 정보: {event.description}</p>
-              {isBetweenDates(event.start_date, event.end_date) && <button onClick={() => handleJoinClick(event.id)} className='event-participate'>참가신청</button>}
             </div>
           </div>
         </div>
@@ -86,9 +106,29 @@ const Event1 = () => {
           <h3>플레이어 메뉴</h3>
           <div className="button-container">
             <button>기권</button>
-            {user.id === event.created_by && <button>다음 라운드 개시</button>}
-            {user.id === event.created_by && <button onClick={handleManageApplicationsClick}>참가 신청 관리</button>}
+            {user.id === event.created_by && (
+              <button onClick={handleNextRoundStart}>다음 라운드 개시</button>
+            )}
+            {user.id === event.created_by && (
+              <button onClick={handleManageApplicationsClick}>
+                참가 신청 관리
+              </button>
+            )}
           </div>
+          {selectedRound && (
+            <div className="round-info">
+              <h4>Round {selectedRound} 정보</h4>
+              <ul>
+                {rounds
+                  .filter(round => round.round_id === selectedRound)
+                  .map(round => (
+                    <li key={round.matchNum}>
+                      Match {round.matchNum}: {round.player1Id} vs {round.player2Id? round.player2Id:"X"} (Score: {round.player1Res} - {round.player2Res})
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>

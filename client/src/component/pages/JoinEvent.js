@@ -24,7 +24,6 @@ const JoinEvent = ({ user }) => {
         }
 
         const data = await response.json();
-        console.log(data.events);
         setEvents(data.events);
         setLoading(false);
       } catch (err) {
