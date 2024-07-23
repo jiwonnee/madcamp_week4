@@ -7,8 +7,6 @@ const EventNav = ({ user, events }) => {
   const { id } = useParams();
   const location = useLocation();
 
-  console.log(events);
-
   const event = events.find(event => event.id === parseInt(id));
 
   if (!event) {
