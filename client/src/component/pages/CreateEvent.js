@@ -98,6 +98,9 @@ const CreateEvent = ({ user, addEvent }) => {
               accept="image/*"
               onChange={handleImageChange}
             />
+            {imagePreview && (
+              <img src={imagePreview} alt="Image Preview" className="image-preview" />
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="name">이벤트 이름:</label>

@@ -89,9 +89,11 @@
   }
   
   .image-preview {
-    width: 100%;
-    max-width: 300px;
     margin-top: 10px;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
     border-radius: 5px;
   }
+  
   
