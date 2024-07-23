@@ -24,6 +24,36 @@ const Event1 = () => {
     navigate(`/event/${event.id}/detail/applications`, { state: { user, events } });
   };
 
+  const handleJoinClick = async (eventId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/tournament/apply`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ tournament_id: eventId, user_id: user.id }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to apply participation');
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+      alert('참가 신청 성공'); // 성공 알림
+      // 추가적인 로직 처리 (예: 알림 표시 등)
+    } catch (err) {
+      console.error(err.message);
+      alert('참가 신청 실패: ' + err.message); // 실패 알림
+      // 에러 처리 (예: 알림 표시 등)
+    }
+  };
+
+  const isBetweenDates = (startDate, endDate) => {
+    const today = new Date();
+    return today >= new Date(startDate) && today <= new Date(endDate);
+  };
+
   return (
     <div>
       <EventNav user={user} events={events} />
@@ -34,21 +64,24 @@ const Event1 = () => {
               <img src={event.image_url} alt="event" />
             </div>
             <div className="event-info">
-              <p>날짜: {new Date(event.start_date).toLocaleDateString()}</p>
-              <p>위치: {event.location}</p>
-              <p>모집인원: {event.maxPeople}</p>
+              <p>이름: {event.name}</p>
+              <p>접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
+              <p>대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>
+              <p>위치: {event.Location}</p>
+              <p>모집인원: {event.currentPeople}/{event.maxPeople}</p>
               <p>기타 정보: {event.description}</p>
+              {isBetweenDates(event.start_date, event.end_date) && <button onClick={() => handleJoinClick(event.id)} className='event-participate'>참가신청</button>}
             </div>
           </div>
         </div>
         <div className="right-content">
           <h3>라운드별 대진</h3>
           <div className="button-container">
-          {roundButtons}
+            {roundButtons}
           </div>
           <h3>라운드별 순위</h3>
           <div className="button-container">
-          {roundButtons}
+            {roundButtons}
           </div>
           <h3>플레이어 메뉴</h3>
           <div className="button-container">
