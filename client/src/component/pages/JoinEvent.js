@@ -91,7 +91,7 @@ const JoinEvent = ({ user }) => {
                 <img src={event.image_url} alt="event" />
                 <div className="event-status">{isBetweenDates(event.start_date, event.end_date) ? "모집중" : "접수 종료됨"}</div>
               </div>
-              <div className="event-details">
+              <div className="join-event-details">
                 <p>이름: {event.name}</p>
                 <p>접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
                 <p>대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>

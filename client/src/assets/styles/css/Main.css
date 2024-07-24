@@ -90,16 +90,16 @@
 }
 
 .bottom-space {
-  height: 50px; /* Reduced the height of the bottom space */
+  height: 50px;
   background-color: black;
 }
 
 .about-section {
   background-color: white;
-  padding: 100px 20px; /* Add padding to make the white section bigger */
+  padding: 100px 20px;
   color: black;
   opacity: 0;
-  transform: translateY(100px); /* Adjusted for a smoother transition */
+  transform: translateY(100px);
   transition: opacity 1s ease-out, transform 1s ease-out;
   padding-bottom: 240px;
   padding-top: 220px;
@@ -117,11 +117,11 @@
   justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
-  padding-top: 100px; /* Add top padding to separate from the previous section */
+  padding-top: 100px;
 }
 
 .about-title {
-  font-size: 48px; /* Increased font size */
+  font-size: 48px; 
   font-weight: bold;
   flex: 1;
   padding-top: 80px;;
@@ -131,5 +131,33 @@
   flex: 2;
   font-size: 18px;
   line-height: 1.6;
-  margin-left: 20px; /* Add margin left to separate from title */
+  margin-left: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 홈 페이지에서만 사용할 애니메이션 클래스 */
+.home .logo, .home .appname, .home .button-container {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 1s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.home .logo.visible, .home .appname.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.home .button-container.visible {
+  opacity: 1;
+  transform: translateY(0);
 }

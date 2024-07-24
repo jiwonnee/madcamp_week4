@@ -8,6 +8,9 @@ import Nav from '../common/Nav';
 const Main = ({ user }) => {
   const navigate = useNavigate();
   const aboutSectionRef = useRef(null);
+  const logoRef = useRef(null);
+  const appnameRef = useRef(null);
+  const buttonContainerRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -32,14 +35,29 @@ const Main = ({ user }) => {
     };
   }, []);
 
+  useEffect(() => {
+    // Add animation classes after initial render
+    if (logoRef.current && appnameRef.current) {
+      setTimeout(() => {
+        logoRef.current.classList.add('visible');
+        appnameRef.current.classList.add('visible');
+      }, 100); // Slight delay to ensure smooth animation
+    }
+    setTimeout(() => {
+      if (buttonContainerRef.current) {
+        buttonContainerRef.current.classList.add('visible');
+      }
+    }, 1500); // Delay for buttons to appear after logo and appname
+  }, []);
+
   return (
-    <div>
+    <div className="home">
       <Nav user={user} />
       <div className="main-container">
         <div className="intro-section">
-          <img src={logo} alt="Khartes Logo" className="logo" />
-          <p className="appname">All-Rounder</p>
-          <div className="button-container">
+          <img src={logo} alt="Khartes Logo" className="logo" ref={logoRef} />
+          <p className="appname" ref={appnameRef}>All-Rounder</p>
+          <div className="button-container" ref={buttonContainerRef}>
             <button className="main-button third" onClick={() => navigate('/create_event')}>이벤트 개최하기</button>
             <button className="main-button third" onClick={() => navigate('/join_event')}>이벤트 검색</button>
           </div>
