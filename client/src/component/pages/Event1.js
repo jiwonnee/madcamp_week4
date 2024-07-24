@@ -5,6 +5,7 @@ import Nav from "../common/Nav";
 import EventNav from "../common/EventNav";
 import { PlayerProvider } from "../contexts/PlayerInfo";
 import { RoundProvider, useRound } from "../contexts/RoundInfo";
+import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaInfoCircle, FaClipboardList } from 'react-icons/fa';
 
 const Event1 = () => {
   const { id } = useParams();
@@ -72,9 +73,6 @@ const Event1Content = ({
     await addRound();
   };
 
-
-  console.log(rounds);
-
   return (
     <div>
       <EventNav user={user} events={events} />
@@ -85,12 +83,12 @@ const Event1Content = ({
               <img src={event.image_url} alt="event" />
             </div>
             <div className="event-info">
-              <p>이름: {event.name}</p>
-              <p>접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
-              <p>대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>
-              <p>위치: {event.Location}</p>
-              <p>모집인원: {event.currentPeople}/{event.maxPeople}</p>
-              <p>기타 정보: {event.description}</p>
+              <p><FaClipboardList className="icon" /> 이름: {event.name}</p>
+              <p><FaCalendarAlt className="icon" /> 접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
+              <p><FaCalendarAlt className="icon" /> 대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>
+              <p><FaMapMarkerAlt className="icon" /> 위치: {event.Location}</p>
+              <p><FaUsers className="icon" /> 모집인원: {event.currentPeople}/{event.maxPeople}</p>
+              <p><FaInfoCircle className="icon" /> 기타 정보: {event.description}</p>
             </div>
           </div>
         </div>
@@ -123,7 +121,7 @@ const Event1Content = ({
                   .filter(round => round.round_id === selectedRound)
                   .map(round => (
                     <li key={round.matchNum}>
-                      Match {round.matchNum}: {round.player1Id} vs {round.player2Id? round.player2Id:"X"} (Score: {round.player1Res} - {round.player2Res})
+                      Match {round.matchNum}: {round.player1Id} vs {round.player2Id ? round.player2Id : "X"} (Score: {round.player1Res} - {round.player2Res})
                     </li>
                   ))}
               </ul>

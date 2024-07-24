@@ -103,3 +103,13 @@
   margin-top: 10px;
   border-radius: 5px;
 }
+
+.icon {
+  vertical-align: middle;
+  margin-right: 5px; /* 아이콘과 텍스트 사이의 간격 조정 */
+}
+
+.join-event-details p {
+  display: flex;
+  align-items: center;
+}

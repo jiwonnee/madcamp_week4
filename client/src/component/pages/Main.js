@@ -47,7 +47,7 @@ const Main = ({ user }) => {
       if (buttonContainerRef.current) {
         buttonContainerRef.current.classList.add('visible');
       }
-    }, 1500); // Delay for buttons to appear after logo and appname
+    }, 600); // Delay for buttons to appear after logo and appname
   }, []);
 
   return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/styles/css/JoinEvent.css';
 import Nav from '../common/Nav';
+import { FaCalendarAlt, FaMapMarkerAlt, FaUsers, FaInfoCircle, FaClipboardList } from 'react-icons/fa';
 
 const JoinEvent = ({ user }) => {
   const [events, setEvents] = useState([]);
@@ -92,12 +93,12 @@ const JoinEvent = ({ user }) => {
                 <div className="event-status">{isBetweenDates(event.start_date, event.end_date) ? "모집중" : "접수 종료됨"}</div>
               </div>
               <div className="join-event-details">
-                <p>이름: {event.name}</p>
-                <p>접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
-                <p>대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>
-                <p>위치: {event.Location}</p>
-                <p>모집인원: {event.currentPeople}/{event.maxPeople}</p>
-                <p>기타 정보: {event.description}</p>
+                <p><FaClipboardList className="icon" /> 이름: {event.name}</p>
+                <p><FaCalendarAlt className="icon" /> 접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
+                <p><FaCalendarAlt className="icon" /> 대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>
+                <p><FaMapMarkerAlt className="icon" /> 위치: {event.Location}</p>
+                <p><FaUsers className="icon" /> 모집인원: {event.currentPeople}/{event.maxPeople}</p>
+                <p><FaInfoCircle className="icon" /> 기타 정보: {event.description}</p>
                 {isBetweenDates(event.start_date, event.end_date) && <button onClick={(e) => {e.stopPropagation(); handleJoinClick(event.id);}} className='event-participate'>참가신청</button>}
               </div>
             </div>
@@ -109,7 +110,3 @@ const JoinEvent = ({ user }) => {
 };
 
 export default JoinEvent;
-
-
-//http://localhost:3001/api/tournament/${eventId}/join 디자인해줘
-//TournamentUser 테이블에 state는 2로, 
