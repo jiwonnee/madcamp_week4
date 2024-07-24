@@ -12,12 +12,21 @@
     font-size: 24px;
     font-weight: bold;
     color: black;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 20px;
     text-align: left;
   }
   
   .subtitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .subtitle_2 {
     font-size: 24px;
     font-weight: bold;
     color: black;

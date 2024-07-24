@@ -2,25 +2,29 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../assets/styles/css/CreateEvent.css";
 import Nav from "../common/Nav";
+import Toast from "../common/Toast"; // Adjust the import path as needed
 
 const CreateEvent = ({ user, addEvent }) => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [eventData, setEventData] = useState({
     date: "",
+    endDate: "",
+    roundStartDate: "",
+    roundEndDate: "",
     location: "",
     participants: "",
     details: "",
   });
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
 
   const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     setImage(file);
-    
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setImagePreview(reader.result);
@@ -39,6 +43,21 @@ const CreateEvent = ({ user, addEvent }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (new Date(eventData.date) > new Date(eventData.endDate)) {
+      setToastMessage("유효하지 않은 날짜입니다: 접수 종료 날짜는 접수 시작 날짜 이후여야 합니다.");
+      return;
+    }
+
+    if (new Date(eventData.roundStartDate) > new Date(eventData.roundEndDate)) {
+      setToastMessage("유효하지 않은 날짜입니다: 대회 종료 날짜는 대회 시작 날짜 이후여야 합니다.");
+      return;
+    }
+
+    if (new Date(eventData.endDate) > new Date(eventData.roundStartDate)) {
+      setToastMessage("유효하지 않은 날짜입니다: 대회 시작 날짜는 접수 종료 날짜 이후여야 합니다.");
+      return;
+    }
+
     const newEvent = {
       ...eventData,
       image: image,
@@ -49,9 +68,9 @@ const CreateEvent = ({ user, addEvent }) => {
     formData.append("name", newEvent["name"]);
     formData.append("details", newEvent["details"]);
     formData.append("startDate", newEvent["date"]);
-    formData.append("endDate", newEvent["end-date"]);
-    formData.append("roundStartDate", newEvent["round-date"]);
-    formData.append("roundEndDate", newEvent["round-end-date"]);
+    formData.append("endDate", newEvent["endDate"]);
+    formData.append("roundStartDate", newEvent["roundStartDate"]);
+    formData.append("roundEndDate", newEvent["roundEndDate"]);
     formData.append("location", newEvent["location"]);
     formData.append("maxPeople", newEvent["participants"]);
     formData.append("currentPeople", 0); // 초기값을 0으로 설정
@@ -72,7 +91,7 @@ const CreateEvent = ({ user, addEvent }) => {
       const result = await response.json();
       if (response.ok) {
         console.log("Tournament created successfully:", result);
-        navigate('/main', { state: { user: user } })
+        navigate('/main', { state: { user: user } });
       } else {
         console.error("Error creating tournament:", result.message);
         // 실패 시 필요한 작업 수행
@@ -83,12 +102,16 @@ const CreateEvent = ({ user, addEvent }) => {
     }
   };
 
+  const handleToastClose = () => {
+    setToastMessage('');
+  };
+
   return (
     <div>
       <Nav user={user} />
       <h1 className="title">이벤트 개최하기</h1>
       <div className="create-event-container">
-        {successMessage && <div className="success-message">{successMessage}</div>}
+        {toastMessage && <Toast message={toastMessage} duration={1500} onClose={handleToastClose} />} {/* duration을 3000ms로 설정 */}
         <form className="event-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="imageUpload">사진 업로드:</label>
@@ -125,34 +148,34 @@ const CreateEvent = ({ user, addEvent }) => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="end-date">접수 종료 날짜:</label>
+            <label htmlFor="endDate">접수 종료 날짜:</label>
             <input
               type="date"
-              id="end-date"
-              name="end-date"
-              value={eventData.end_date}
+              id="endDate"
+              name="endDate"
+              value={eventData.endDate}
               onChange={handleChange}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="date">대회 시작 날짜:</label>
+            <label htmlFor="roundStartDate">대회 시작 날짜:</label>
             <input
               type="date"
-              id="round-date"
-              name="round-date"
-              value={eventData.round_date}
+              id="roundStartDate"
+              name="roundStartDate"
+              value={eventData.roundStartDate}
               onChange={handleChange}
               required
             />
           </div>
           <div className="form-group">
-            <label htmlFor="end-date">대회 종료 날짜:</label>
+            <label htmlFor="roundEndDate">대회 종료 날짜:</label>
             <input
               type="date"
-              id="round-end-date"
-              name="round-end-date"
-              value={eventData.round_end_date}
+              id="roundEndDate"
+              name="roundEndDate"
+              value={eventData.roundEndDate}
               onChange={handleChange}
               required
             />

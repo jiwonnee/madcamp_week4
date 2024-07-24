@@ -114,3 +114,35 @@ app.get('/api/protected', authenticateToken, (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+
+// UserInfo.js 정보 띄우는부분 추가
+// 사용자 정보 가져오기
+app.get('/api/userinfo/:id', authenticateToken, async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const [result] = await db.query("SELECT following_userid, email, following_password FROM Users WHERE id = ?", [userId]);
+    if (result.length == 1) {
+      res.status(200).json(result[0]);
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ message: "Database Error" });
+  }
+});
+
+// 이전 경기 정보 가져오기 (예시)
+app.get('/api/previousgames/:id', authenticateToken, async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const [result] = await db.query("SELECT * FROM PreviousGames WHERE user_id = ?", [userId]);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ message: "Database Error" });
+  }
+});
