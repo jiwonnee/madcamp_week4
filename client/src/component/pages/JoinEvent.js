@@ -70,7 +70,7 @@ const JoinEvent = ({ user }) => {
   };
 
   const handleJoinClick = async (eventId) => {
-    fetchTournaments(user.id);
+    await fetchTournaments(user.id);
     if(!isTournamentExists){
       alert('이미 신청 또는 참가중인 이벤트가 존재합니다.');
       return;
