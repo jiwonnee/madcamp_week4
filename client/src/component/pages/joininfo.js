@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import Nav from "../common/Nav";
 import { PlayerProvider, usePlayer } from "../contexts/PlayerInfo";
 import { RoundProvider, useRound } from "../contexts/RoundInfo";
+import { useNavigate } from "react-router-dom";
 import "../../assets/styles/css/JoinInfo.css";
 
 const JoinInfoContent = ({ user, selectedTournament }) => {
   const [matches, setMatches] = useState([]);
   const [selectedResult, setSelectedResult] = useState("");
   const [userNames, setUserNames] = useState({});
+  const [showToast, setShowToast] = useState(false);
+  const navigate = useNavigate();
 
   const { updateMatch } = useRound();
 
@@ -30,7 +33,6 @@ const JoinInfoContent = ({ user, selectedTournament }) => {
           }
           const data = await response.json();
 
-          // 필터링하여 user.id가 player1Id나 player2Id에 포함되지 않은 항목 제거
           const filteredMatches = data.matches.filter(
             (match) =>
               match.player1Id === user.id || match.player2Id === user.id
@@ -95,29 +97,14 @@ const JoinInfoContent = ({ user, selectedTournament }) => {
 
     await updateMatch(matches[0].round_id, matches[0].matchNum, newRes);
 
-    //   try {
-    //     const response = await fetch(
-    //       `http://localhost:3001/api/tournament/${selectedTournament.id}/submitResult`,
-    //       {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //           result: newRes,
-    //         }),
-    //       }
-    //     );
+    setShowToast(true);
+    setTimeout(() => setShowToast(false), 3000);
+  };
 
-    //     if (!response.ok) {
-    //       throw new Error("Failed to submit results");
-    //     }
-
-    //     const data = await response.json();
-    //     console.log(data.message);
-    //   } catch (err) {
-    //     console.error("Error submitting results:", err);
-    //   }
+  const handleImageClick = () => {
+    navigate(`/event/${selectedTournament.id}`, {
+      state: { user, events: [selectedTournament] },
+    });
   };
 
   return (
@@ -125,55 +112,72 @@ const JoinInfoContent = ({ user, selectedTournament }) => {
       <Nav user={user} />
       <h1 className="title">참여 정보</h1>
       <div className="join-info-container">
-        <h1>참여 정보</h1>
-        <img src={selectedTournament.image_url} alt="event" />
-        <h2>대회명: {selectedTournament.name}</h2>
-        {matches.length > 0 && (
-          <h3>
-            {matches[0].round_id} 라운드 Match {matches[0].matchNum}
-          </h3>
-        )}
-        {matches.length > 0 && matches[0].player2Id != -1 && matches[0].player2Id != null && (
-          <div className="matches">
-            {matches.map((m) => (
-              <div className="match" key={m.id}>
-                <p>
-                  {userNames[m.player1Id]} vs{" "}
-                  {m.player2Id ? userNames[m.player2Id] : "X"}
-                </p>
-                <select
-                  value={selectedResult}
-                  onChange={(e) => handleResultChange(e.target.value)}
-                >
-                  <option value="">결과를 선택하세요</option>
-                  <option value="2-2">승-승</option>
-                  <option value="2-1">승-무</option>
-                  <option value="2-0">승-패</option>
-                  <option value="1-2">무-승</option>
-                  <option value="1-1">무-무</option>
-                  <option value="1-0">무-패</option>
-                  <option value="0-2">패-승</option>
-                  <option value="0-1">패-무</option>
-                  <option value="0-0">패-패</option>
-                </select>
+        <div className="left-info">
+          <img
+            src={selectedTournament.image_url}
+            alt="event"
+            onClick={handleImageClick}
+            style={{ cursor: "pointer" }}
+          />
+        </div>
+        <div className="right-info">
+          <h2>대회명: {selectedTournament.name}</h2>
+          {matches.length > 0 && (
+            <h3>
+              {matches[0].round_id} 라운드 Match {matches[0].matchNum}
+            </h3>
+          )}
+          {matches.length > 0 &&
+            matches[0].player2Id !== -1 &&
+            matches[0].player2Id !== null && (
+              <div className="matches">
+                {matches.map((m) => (
+                  <div className="match" key={m.id}>
+                    <p>
+                      {userNames[m.player1Id]} vs{" "}
+                      {m.player2Id ? userNames[m.player2Id] : "X"}
+                    </p>
+                    <select
+                      value={selectedResult}
+                      onChange={(e) => handleResultChange(e.target.value)}
+                    >
+                      <option value="">결과를 선택하세요</option>
+                      <option value="2-2">승-승</option>
+                      <option value="2-1">승-무</option>
+                      <option value="2-0">승-패</option>
+                      <option value="1-2">무-승</option>
+                      <option value="1-1">무-무</option>
+                      <option value="1-0">무-패</option>
+                      <option value="0-2">패-승</option>
+                      <option value="0-1">패-무</option>
+                      <option value="0-0">패-패</option>
+                    </select>
+                  </div>
+                ))}
+                <button className="submit-button" onClick={handleSubmit}>
+                  결과 제출
+                </button>
               </div>
-            ))}
-            <button onClick={handleSubmit}>결과 제출</button>
-          </div>
-        )}
-        {matches.length > 0 && (matches[0].player2Id == -1 || matches[0].player2Id == null) && (
-          <div className="matches">
-            <div className="match" key={matches[0].id}>
-              <p>
-                {userNames[matches[0].player1Id]} vs {"X"}
-              </p>
-              <p>
-                당신은 부전승입니다. 부전승은 경기 결과를 수정할 수 없습니다.
-              </p>
-            </div>
-          </div>
-        )}
+            )}
+          {matches.length > 0 &&
+            (matches[0].player2Id === -1 ||
+              matches[0].player2Id === null) && (
+              <div className="matches">
+                <div className="match" key={matches[0].id}>
+                  <p>
+                    {userNames[matches[0].player1Id]} vs {"X"}
+                  </p>
+                  <p>당신은 부전승입니다. 부전승은 경기 결과를 수정할 수 없습니다.</p>
+                </div>
+              </div>
+            )}
+        </div>
       </div>
+      {showToast && (
+        <div className="toast show">
+          결과가 제출되었습니다.<br /> 이벤트 이미지를 눌러 결과를 확인해 보세요!
+        </div>
+      )}
     </div>
   );
 };

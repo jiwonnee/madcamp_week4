@@ -1,7 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 import {
-  BrowserRouter,
   Routes,
   Route,
   Navigate,
@@ -62,62 +61,62 @@ function App() {
 
   return (
     <div className="app-container">
-          <Routes>
-            <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route
-              path="/main"
-              element={
-                user ? (
-                  <Main user={user} onLogout={handleLogout} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              path="/userinfo"
-              element={user ? <UserInfo user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/joininfo"
-              element={user ? <JoinInfo user={user} /> : <Navigate to="/" />} // JoinInfo 경로 추가
-            />
-            <Route
-              path="/notice"
-              element={user ? <Notice user={user} /> : <Navigate to="/" />} // Notice 경로 추가
-            />
-            <Route
-              path="/join_event"
-              element={user ? <JoinEvent user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/create_event"
-              element={user ? <CreateEvent user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/event/:id/detail"
-              element={user ? <Event1 user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/event/:id/detail/applications"
-              element={
-                user ? <Event1_Applications user={user} /> : <Navigate to="/" />
-              }
-            />
-            <Route
-              path="/event/:id/participants"
-              element={user ? <Event2 user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/event/:id/tournament"
-              element={user ? <Event3 user={user} /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/event/:id/notice"
-              element={user ? <Event4 user={user} /> : <Navigate to="/" />}
-            />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route
+            path="/main"
+            element={
+              user ? (
+                <Main user={user} onLogout={handleLogout} />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            path="/userinfo"
+            element={user ? <UserInfo user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/joininfo"
+            element={user ? <JoinInfo user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/notice"
+            element={user ? <Notice user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/join_event"
+            element={user ? <JoinEvent user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/create_event"
+            element={user ? <CreateEvent user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/event/:id"
+            element={user ? <Event1 user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/event/:id/detail/applications"
+            element={
+              user ? <Event1_Applications user={user} /> : <Navigate to="/" />
+            }
+          />
+          <Route
+            path="/event/:id/participants"
+            element={user ? <Event2 user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/event/:id/tournament"
+            element={user ? <Event3 user={user} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/event/:id/notice"
+            element={user ? <Event4 user={user} /> : <Navigate to="/" />}
+          />
+        </Routes>
     </div>
   );
 }
