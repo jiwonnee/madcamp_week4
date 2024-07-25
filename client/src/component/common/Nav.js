@@ -1,9 +1,19 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../../assets/styles/css/Nav.css";
 import Logo from "../../assets/images/Khartes_Logo_Mini.png";
 
 const Nav = ({ user }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Remove token from local storage
+    localStorage.removeItem('token');
+
+    // Redirect to login page
+    navigate('/');
+  };
+
   return (
     <div className="nav-container">
       <div className="nav-left">
@@ -17,7 +27,7 @@ const Nav = ({ user }) => {
       <div className="nav-right">
         <div className="user-info">
           <div className="logout">
-            <button className="btn btn-2">Logout</button>
+            <button className="btn btn-2" onClick={handleLogout}>Logout</button>
           </div>
           <div className="dropdown">
             <button className="btn dropdown-btn">

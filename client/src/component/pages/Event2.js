@@ -12,6 +12,8 @@ const Event2 = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const event = events.find((event) => event.id === parseInt(id));
+
   const fetchPlayers = async () => {
     try {
       const response = await fetch(`http://localhost:3001/api/tournament/${id}/players`, {
@@ -57,7 +59,7 @@ const Event2 = () => {
             <div className="application-card" key={application.id}>
               <div className="application-info">
                 <p>{application.following_userid}</p>
-                <button className='accept-button'>강제 추방</button>
+                {user.id === event.created_by && (<button className='accept-button'>강제 추방</button>)}
               </div>
             </div>
           ))}
