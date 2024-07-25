@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.fb8d08b8.css",
+    "main.js": "/static/js/main.d6d75b27.js",
+    "static/js/453.419a5d54.chunk.js": "/static/js/453.419a5d54.chunk.js",
+    "static/media/Khartes_Logo_Mini.png": "/static/media/Khartes_Logo_Mini.af06e6a3ae24a23c3cba.png",
+    "index.html": "/index.html",
+    "main.fb8d08b8.css.map": "/static/css/main.fb8d08b8.css.map",
+    "main.d6d75b27.js.map": "/static/js/main.d6d75b27.js.map",
+    "453.419a5d54.chunk.js.map": "/static/js/453.419a5d54.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fb8d08b8.css",
+    "static/js/main.d6d75b27.js"
+  ]
+}

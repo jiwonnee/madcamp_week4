@@ -1,0 +1,25 @@
+runtime: nodejs22
+
+env_variables:
+  NODE_ENV: 'production'
+
+instance_class: F2
+
+entrypoint: npm run start
+
+handlers:
+  - url: /api/.*
+    script: auto
+  - url: /
+    static_files: client/build/index.html
+    upload: client/build/index.html
+  - url: /static
+    static_dir: client/build/static
+  - url: /(.*\.(js|css|png|jpg|jpeg|gif|ico|svg))
+    static_files: client/build/\1
+    upload: client/build/.*
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 5

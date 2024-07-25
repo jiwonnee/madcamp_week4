@@ -95,7 +95,7 @@ function App() {
             element={user ? <CreateEvent user={user} /> : <Navigate to="/" />}
           />
           <Route
-            path="/event/:id"
+            path="/event/:id/detail"
             element={user ? <Event1 user={user} /> : <Navigate to="/" />}
           />
           <Route
