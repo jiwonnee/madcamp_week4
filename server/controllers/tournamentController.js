@@ -285,26 +285,32 @@ const getPlayersMoreInfo = async (req, res) => {
     const [players] = await db.query(
       `
       SELECT 
-      tu.id,
-      tu.tournament_id,
-      tu.user_id,
-      tu.player_rank,
-      tu.state,
-      tu.win,
-      tu.lose,
-      tu.score,
-      tu.buchholz,
-      tu.maxWinStreak,
-      tu.winStreakStartRound,
-      u.following_userid,
-      GROUP_CONCAT(m.player2Id ORDER BY m.round_id) as opponentIds,
-      GROUP_CONCAT(m.player1Res ORDER BY m.round_id) as matchResults
-    FROM TournamentUser tu
-    LEFT JOIN Users u ON tu.user_id = u.id
-    LEFT JOIN Matches m ON tu.user_id = m.player1Id OR tu.user_id = m.player2Id
-    WHERE tu.tournament_id = ?
-    GROUP BY tu.id, tu.tournament_id, tu.user_id, tu.player_rank, tu.state, tu.win, tu.lose, tu.score, tu.buchholz, tu.maxWinStreak, tu.winStreakStartRound, u.following_userid;
-    `,
+        tu.id,
+        tu.tournament_id,
+        tu.user_id,
+        tu.player_rank,
+        tu.state,
+        tu.win,
+        tu.lose,
+        tu.score,
+        tu.buchholz,
+        tu.maxWinStreak,
+        tu.winStreakStartRound,
+        u.following_userid,
+        GROUP_CONCAT(CASE 
+          WHEN m.player1Id = tu.user_id THEN COALESCE(m.player2Id, -1) 
+          ELSE m.player1Id 
+        END ORDER BY m.round_id) as opponentIds,
+        GROUP_CONCAT(CASE 
+          WHEN m.player1Id = tu.user_id THEN m.player1Res 
+          ELSE m.player2Res 
+        END ORDER BY m.round_id) as matchResults
+      FROM TournamentUser tu
+      LEFT JOIN Users u ON tu.user_id = u.id
+      LEFT JOIN Matches m ON tu.user_id = m.player1Id OR tu.user_id = m.player2Id
+      WHERE tu.tournament_id = ?
+      GROUP BY tu.id, tu.tournament_id, tu.user_id, tu.player_rank, tu.state, tu.win, tu.lose, tu.score, tu.buchholz, tu.maxWinStreak, tu.winStreakStartRound, u.following_userid;
+      `,
       [id]
     );
 
@@ -324,6 +330,7 @@ const getPlayersMoreInfo = async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 };
+
 
 const updatePlayers = async (req, res) => {
   const { players } = req.body;
@@ -355,47 +362,6 @@ const updatePlayers = async (req, res) => {
           player.tournament_id,
         ]
       );
-
-      const matchUpdatePromises = player.opponentId.map(
-        async (opponentId, index) => {
-          if (opponentId !== -1) {
-            const user1_id = player.user_id;
-            const user2_id = opponentId;
-            const user1_score = player.matchResult[index];
-            const opponent = players.find(p => p.user_id === opponentId);
-            const user2_score = opponent.matchResult[opponent.opponentId.indexOf(user1_id)];
-
-            // Determine round_id and matchNum
-            const round_id = index + 1; // This can be adjusted based on your logic
-            const [matchNumResult] = await db.query(
-              `SELECT IFNULL(MAX(matchNum), 0) + 1 AS matchNum
-              FROM Matches
-              WHERE tournament_id = ? AND round_id = ?`,
-              [player.tournament_id, round_id]
-            );
-            const matchNum = matchNumResult[0].matchNum;
-
-            // await db.query(
-            //   `INSERT INTO Matches (tournament_id, round_id, matchNum, player1Id, player2Id, player1Res, player2Res)
-            // VALUES (?, ?, ?, ?, ?, ?, ?)
-            // ON DUPLICATE KEY UPDATE
-            // player1Res = VALUES(player1Res),
-            // player2Res = VALUES(player2Res)`,
-            //   [
-            //     player.tournament_id,
-            //     round_id,
-            //     matchNum,
-            //     user1_id,
-            //     user2_id,
-            //     user1_score,
-            //     user2_score,
-            //   ]
-            // );
-          }
-        }
-      );
-
-      await Promise.all(matchUpdatePromises);
     });
 
     await Promise.all(updatePromises);
@@ -478,6 +444,23 @@ const updateRounds = async (req, res) => {
   }
 };
 
+const submitResult = async (req, res) =>  {
+  const { id } = req.params;
+  const { result } = req.body;
+
+  try {
+    await db.query(
+      `UPDATE Matches SET player1Res = ?, player2Res = ? WHERE tournament_id = ? AND round_id = ? AND matchNum = ?`,
+      [result.player1Res, result.player2Res, id, result.tournament_id, result.matchNum]
+    );
+
+    res.status(200).json({ message: 'Result submitted successfully' });
+  } catch (error) {
+    console.error('Error submitting result:', error);
+    res.status(500).json({ message: 'Database error' });
+  }
+};
+
 module.exports = {
   getTournamentInfo,
   newRoundTournament,
@@ -493,4 +476,5 @@ module.exports = {
   fetchWins,
   Rounds,
   updateRounds,
+  submitResult
 };
