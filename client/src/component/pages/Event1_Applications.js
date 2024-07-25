@@ -63,6 +63,30 @@ const Event1_Applications = () => {
     }
   };
 
+  const handleDecline = async (userid) => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/tournament/${id}/decline`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: userid }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to decline participation');
+      }
+
+      const data = await response.json();
+      console.log(data.message);
+      // 참가 수락 후 신청 목록을 다시 불러오기
+      fetchApplications();
+    } catch (err) {
+      console.error(err.message);
+      // 에러 처리 (예: 알림 표시 등)
+    }
+  }
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -82,6 +106,7 @@ const Event1_Applications = () => {
               <div className="application-info">
                 <p>{application.following_userid}</p>
                 <button onClick={() => handleAccept(application.id)} className='accept-button'>참가 수락</button>
+                <button onClick={() => handleDecline(application.id)} className='decline-button'>참가 거절</button>
               </div>
             </div>
           ))}
