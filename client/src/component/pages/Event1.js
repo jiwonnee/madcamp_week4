@@ -136,82 +136,108 @@ const Event1Content = ({
     fetchPlayers();
   })
 
+  const handleRoundInfo = (score) => {
+    switch (score) {
+      case 2:
+        return '승';
+      case 1:
+        return '무';
+      case 0:
+        return '패';
+      default:
+        return score;
+    }
+  };
+  
   return (
-    <div>
-      <EventNav user={user} events={events} />
-      <div className="container">
-        <div className="event1-container">
-          <div className="event-details">
-            <div className="event-image">
-              <img src={event.image_url} alt="event" />
-            </div>
-            <div className="event-info">
-              <p><FaClipboardList className="icon" /> 이름: {event.name}</p>
-              <p><FaCalendarAlt className="icon" /> 접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
-              <p><FaCalendarAlt className="icon" /> 대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>
-              <p><FaMapMarkerAlt className="icon" /> 위치: {event.Location}</p>
-              <p><FaUsers className="icon" /> 모집인원: {event.currentPeople}/{event.maxPeople}</p>
-              <p><FaInfoCircle className="icon" /> 기타 정보: {event.description}</p>
-            </div>
+    <div className="container">
+      <div className="event1-container">
+        <div className="event-details">
+          <div className="event-image">
+            <img src={event.image_url} alt="event" />
+          </div>
+          <div className="event-info">
+            <p><FaClipboardList className="icon" /> 이름: {event.name}</p>
+            <p><FaCalendarAlt className="icon" /> 접수 기간: {new Date(event.start_date).toLocaleDateString()} ~ {new Date(event.end_date).toLocaleDateString()}</p>
+            <p><FaCalendarAlt className="icon" /> 대회 기간: {new Date(event.round_start_date).toLocaleDateString()} ~ {new Date(event.round_end_date).toLocaleDateString()}</p>
+            <p><FaMapMarkerAlt className="icon" /> 위치: {event.Location}</p>
+            <p><FaUsers className="icon" /> 모집인원: {event.currentPeople}/{event.maxPeople}</p>
+            <p><FaInfoCircle className="icon" /> 기타 정보: {event.description}</p>
           </div>
         </div>
-        <div className="right-content">
-          <h3>라운드별 대진</h3>
-          <div className="button-container">
-            {roundButtons}
-          </div>
-          <h3>라운드별 순위</h3>
-          <div className="button-container">
-            {rankButtons}
-          </div>
-          {user.id === event.created_by && (<h3>플레이어 메뉴</h3>)}
-          <div className="button-container">
-            {user.id === event.created_by && (
-              <button onClick={handleNextRoundStart}>다음 라운드 개시</button>
-            )}
-            {user.id === event.created_by && (
-              <button onClick={handleManageApplicationsClick}>
-                참가 신청 관리
-              </button>
-            )}
-          </div>
-          {(
-            <div className="round-info">
-              {selectedTab === "round" && (
-                <>
-                  <h4>Round {selectedRound} 정보</h4>
-                  <ul>
+      </div>
+      <div className="right-content">
+        <h3>라운드별 대진</h3>
+        <div className="button-container">
+          {roundButtons}
+        </div>
+        <h3>라운드별 순위</h3>
+        <div className="button-container">
+          {rankButtons}
+        </div>
+        {user.id === event.created_by && (<h3>플레이어 메뉴</h3>)}
+        <div className="button-container">
+          {user.id === event.created_by && (
+            <button onClick={handleNextRoundStart}>다음 라운드 개시</button>
+          )}
+          {user.id === event.created_by && (
+            <button onClick={handleManageApplicationsClick}>
+              참가 신청 관리
+            </button>
+          )}
+        </div>
+        {(
+          <div className="round-info">
+            {selectedTab === "round" && (
+              <>
+                <h4>Round {selectedRound} 정보</h4>
+                <table className="round-table">
+                  <thead>
+                    <tr>
+                      <th>매치</th>
+                      <th>플레이어</th>
+                      <th>승패</th>
+                    </tr>
+                  </thead>
+                  <tbody>
                     {rounds
                       .filter((round) => round.round_id === selectedRound)
                       .map((round) => (
-                        <li key={round.matchNum}>
-                          Match {round.matchNum}: {userNames[round.player1Id]} vs {round.player2Id ? userNames[round.player2Id] : "X"} (Score: {round.player1Res} - {round.player2Res})
-                        </li>
+                        <tr key={round.matchNum}>
+                          <td className="round-number">M{round.matchNum}</td>
+                          <td className="round-info">
+                            {userNames[round.player1Id]} vs {round.player2Id ? userNames[round.player2Id] : "X"}
+                          </td>
+                          <td className="round-info">
+                            {handleRoundInfo(round.player1Res)} - {handleRoundInfo(round.player2Res)}
+                          </td>
+                        </tr>
                       ))}
-                  </ul>
-                </>
-              )}
-              {selectedTab === "rank" && (
-                <>
-                  <h4>현재 순위</h4>
-                  {/* players 배열을 player.rank 순으로 정렬하여 표시 */}
-                  <ul>
-                    {players
-                      .sort((a, b) => a.player_rank - b.player_rank)
-                      .map((player) => (
-                        <li>
-                          {player.player_rank}. {player.following_userid}: {player.win} 승 {player.lose} 패
-                        </li>
-                      ))}
-                  </ul>
-                </>
-              )}
-            </div>
-          )}
-        </div>
+                  </tbody>
+                </table>
+              </>
+            )}
+            {selectedTab === "rank" && (
+              <>
+                <h4>현재 순위</h4>
+                <ul className="rank-list">
+                  {players
+                    .sort((a, b) => a.player_rank - b.player_rank)
+                    .map((player) => (
+                      <li key={player.id}>
+                        <span className="rank-number">{player.player_rank}</span>
+                        <span className="rank-info">{player.following_userid}</span>
+                        <span className="rank-info">{player.win} 승 {player.lose} 패</span>
+                      </li>
+                    ))}
+                </ul>
+              </>
+            )}
+          </div>
+        )}
       </div>
     </div>
-  );
+  );  
 };
 
 export default Event1;
