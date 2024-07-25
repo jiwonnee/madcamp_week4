@@ -126,6 +126,7 @@ const JoinInfoContent = ({ user, selectedTournament }) => {
       <h1 className="title">참여 정보</h1>
       <div className="join-info-container">
         <h1>참여 정보</h1>
+        <img src={selectedTournament.image_url} alt="event" />
         <h2>대회명: {selectedTournament.name}</h2>
         {matches.length > 0 && (
           <h3>
