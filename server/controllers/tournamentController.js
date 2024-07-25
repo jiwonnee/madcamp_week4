@@ -240,6 +240,11 @@ const acceptApplication = async (req, res) => {
         .json({ message: "Application not found or already accepted" });
     }
 
+    await db.query(
+      "UPDATE Tournament SET currentPeople = currentPeople + 1 WHERE id = ?",
+      [id]
+    );
+
     res.status(200).json({ message: "Application accepted successfully" });
   } catch (error) {
     console.error("Error:", error);
@@ -308,31 +313,31 @@ const getPlayersMoreInfo = async (req, res) => {
     const [players] = await db.query(
       `
       SELECT 
-        tu.id,
-        tu.tournament_id,
-        tu.user_id,
-        tu.player_rank,
-        tu.state,
-        tu.win,
-        tu.lose,
-        tu.score,
-        tu.buchholz,
-        tu.maxWinStreak,
-        tu.winStreakStartRound,
-        u.following_userid,
-        GROUP_CONCAT(CASE 
-          WHEN m.player1Id = tu.user_id THEN COALESCE(m.player2Id, -1) 
-          ELSE m.player1Id 
-        END ORDER BY m.round_id) as opponentIds,
-        GROUP_CONCAT(CASE 
-          WHEN m.player1Id = tu.user_id THEN m.player1Res 
-          ELSE m.player2Res 
-        END ORDER BY m.round_id) as matchResults
-      FROM TournamentUser tu
-      LEFT JOIN Users u ON tu.user_id = u.id
-      LEFT JOIN Matches m ON tu.user_id = m.player1Id OR tu.user_id = m.player2Id
-      WHERE tu.tournament_id = ?
-      GROUP BY tu.id, tu.tournament_id, tu.user_id, tu.player_rank, tu.state, tu.win, tu.lose, tu.score, tu.buchholz, tu.maxWinStreak, tu.winStreakStartRound, u.following_userid;
+      tu.id,
+      tu.tournament_id,
+      tu.user_id,
+      tu.player_rank,
+      tu.state,
+      tu.win,
+      tu.lose,
+      tu.score,
+      tu.buchholz,
+      tu.maxWinStreak,
+      tu.winStreakStartRound,
+      u.following_userid,
+      GROUP_CONCAT(CASE 
+        WHEN m.player1Id = tu.user_id THEN COALESCE(m.player2Id, -1) 
+        ELSE m.player1Id 
+      END ORDER BY m.round_id) as opponentIds,
+      GROUP_CONCAT(CASE 
+        WHEN m.player1Id = tu.user_id THEN m.player1Res 
+        ELSE m.player2Res 
+      END ORDER BY m.round_id) as matchResults
+    FROM TournamentUser tu
+    LEFT JOIN Users u ON tu.user_id = u.id
+    LEFT JOIN Matches m ON tu.user_id = m.player1Id OR tu.user_id = m.player2Id
+    WHERE tu.tournament_id = ? AND tu.state = '1'
+    GROUP BY tu.id, tu.tournament_id, tu.user_id, tu.player_rank, tu.state, tu.win, tu.lose, tu.score, tu.buchholz, tu.maxWinStreak, tu.winStreakStartRound, u.following_userid;
       `,
       [id]
     );

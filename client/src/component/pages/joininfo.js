@@ -102,7 +102,7 @@ const JoinInfoContent = ({ user, selectedTournament }) => {
   };
 
   const handleImageClick = () => {
-    navigate(`/event/${selectedTournament.id}`, {
+    navigate(`/event/${selectedTournament.id}/detail`, {
       state: { user, events: [selectedTournament] },
     });
   };

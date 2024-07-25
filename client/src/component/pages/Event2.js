@@ -59,7 +59,6 @@ const Event2 = () => {
             <div className="application-card" key={application.id}>
               <div className="application-info">
                 <p>{application.following_userid}</p>
-                {user.id === event.created_by && (<button className='accept-button'>강제 추방</button>)}
               </div>
             </div>
           ))}

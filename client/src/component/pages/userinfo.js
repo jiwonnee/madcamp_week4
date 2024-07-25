@@ -17,16 +17,6 @@ const UserInfo = ({ user }) => {
       .then(response => response.json())
       .then(data => setUserInfo(data))
       .catch(error => console.error('Error fetching user info:', error));
-
-    // 이전 경기 정보를 가져오는 예시
-    fetch(`http://localhost:3001/api/previousgames/${user.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(response => response.json())
-      .then(data => setPreviousGames(data))
-      .catch(error => console.error('Error fetching previous games:', error));
   }, [user.id, token]);
 
   return (
@@ -44,17 +34,6 @@ const UserInfo = ({ user }) => {
             </>
           ) : (
             <p>Loading...</p>
-          )}
-        </div>
-        <h2 className="subtitle_2">이전 경기</h2>
-        <hr />
-        <div className="previous-games">
-          {previousGames.length > 0 ? (
-            previousGames.map(game => (
-              <p key={game.id}>{game.details}</p>
-            ))
-          ) : (
-            <p>이전 경기가 없습니다.</p>
           )}
         </div>
       </div>

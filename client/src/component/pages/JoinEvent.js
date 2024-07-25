@@ -26,6 +26,28 @@ const JoinEvent = ({ user }) => {
     }
   };
 
+  const isEnd = async (tournament_id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/tournament/${tournament_id}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch tournament info");
+      }
+      const data = await response.json();
+  
+      // `isFinished`가 1이거나 `round_cnt`가 0보다 큰지 확인
+      if (data.isFinished === 1 || data.round_cnt > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err) {
+      console.error("Error fetching tournament:", err);
+      return false; // 기본값으로 false 반환
+    }
+  };  
+
   useEffect(() => {
     fetchTournaments(user.id);
   }, [user.id]);
@@ -73,6 +95,10 @@ const JoinEvent = ({ user }) => {
     await fetchTournaments(user.id);
     if(!isTournamentExists){
       alert('이미 신청 또는 참가중인 이벤트가 존재합니다.');
+      return;
+    }
+    if(await isEnd(eventId)){
+      alert('이벤트가 이미 시작되었거나 종료되었습니다.');
       return;
     }
     try {
