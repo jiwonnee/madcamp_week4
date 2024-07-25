@@ -145,13 +145,14 @@ const getEvents = async (req, res) => {
 };
 
 const getMatchByRound = async (req, res) => {
-  const { round } = req.body;
+  const { id } = req.params;
+  const { round_id } = req.body;
 
   try {
-    const [rows] = await db.query("SELECT * FROM Matches WHERE round_id = ?", [
-      round,
+    const [rows] = await db.query("SELECT * FROM Matches WHERE round_id = ? && tournament_id = ?", [
+      round_id, id
     ]);
-    res.status(200).json({ events: rows });
+    res.status(200).json({ matches: rows });
   } catch (error) {
     console.error("Error fetching events:", error);
     res.status(500).json({ message: "Database error" });
@@ -326,6 +327,7 @@ const getPlayersMoreInfo = async (req, res) => {
 
 const updatePlayers = async (req, res) => {
   const { players } = req.body;
+  console.log(players);
 
   try {
     const updatePromises = players.map(async (player) => {
@@ -349,7 +351,7 @@ const updatePlayers = async (req, res) => {
           player.buchholz,
           player.maxWinStreak,
           player.winStreakStartRound,
-          player.id,
+          player.user_id,
           player.tournament_id,
         ]
       );
@@ -357,26 +359,38 @@ const updatePlayers = async (req, res) => {
       const matchUpdatePromises = player.opponentId.map(
         async (opponentId, index) => {
           if (opponentId !== -1) {
-            const user1_id = player.id;
+            const user1_id = player.user_id;
             const user2_id = opponentId;
             const user1_score = player.matchResult[index];
-            const user2_score =
-              player.matchResult[player.opponentId.indexOf(user1_id)];
+            const opponent = players.find(p => p.user_id === opponentId);
+            const user2_score = opponent.matchResult[opponent.opponentId.indexOf(user1_id)];
 
-            await db.query(
-              `INSERT INTO Matches (tournament_id, user1_id, user2_id, user1_score, user2_score)
-            VALUES (?, ?, ?, ?, ?)
-            ON DUPLICATE KEY UPDATE
-            user1_score = VALUES(user1_score),
-            user2_score = VALUES(user2_score)`,
-              [
-                player.tournament_id,
-                user1_id,
-                user2_id,
-                user1_score,
-                user2_score,
-              ]
+            // Determine round_id and matchNum
+            const round_id = index + 1; // This can be adjusted based on your logic
+            const [matchNumResult] = await db.query(
+              `SELECT IFNULL(MAX(matchNum), 0) + 1 AS matchNum
+              FROM Matches
+              WHERE tournament_id = ? AND round_id = ?`,
+              [player.tournament_id, round_id]
             );
+            const matchNum = matchNumResult[0].matchNum;
+
+            // await db.query(
+            //   `INSERT INTO Matches (tournament_id, round_id, matchNum, player1Id, player2Id, player1Res, player2Res)
+            // VALUES (?, ?, ?, ?, ?, ?, ?)
+            // ON DUPLICATE KEY UPDATE
+            // player1Res = VALUES(player1Res),
+            // player2Res = VALUES(player2Res)`,
+            //   [
+            //     player.tournament_id,
+            //     round_id,
+            //     matchNum,
+            //     user1_id,
+            //     user2_id,
+            //     user1_score,
+            //     user2_score,
+            //   ]
+            // );
           }
         }
       );
@@ -391,6 +405,7 @@ const updatePlayers = async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 };
+
 
 const fetchWins = async (req, res) => {
   const { playerIds } = req.body;
@@ -422,15 +437,7 @@ const Rounds = async (req, res) => {
       [id]
     );
 
-    const groupedRounds = rounds.reduce((acc, match) => {
-      if (!acc[match.round_id - 1]) {
-        acc[match.round_id - 1] = { round: [], num: match.round_id };
-      }
-      acc[match.round_id - 1].round.push(match);
-      return acc;
-    }, []);
-
-    res.status(200).json({ rounds: groupedRounds });
+    res.status(200).json({ rounds: rounds });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ message: "Database error" });

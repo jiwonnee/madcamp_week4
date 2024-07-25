@@ -8,7 +8,27 @@ const JoinEvent = ({ user }) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isTournamentExists, setIsTournamentExists] = useState(false);
   const navigate = useNavigate();
+
+  const fetchTournaments = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/users/${id}/tournaments`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch tournaments");
+      }
+      const data = await response.json();
+      if (data.tournaments.length === 0) setIsTournamentExists(true);
+    } catch (err) {
+      console.error("Error fetching tournaments:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTournaments(user.id);
+  }, [user.id]);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -50,6 +70,11 @@ const JoinEvent = ({ user }) => {
   };
 
   const handleJoinClick = async (eventId) => {
+    fetchTournaments(user.id);
+    if(!isTournamentExists){
+      alert('이미 신청 또는 참가중인 이벤트가 존재합니다.');
+      return;
+    }
     try {
       const response = await fetch(`http://localhost:3001/api/tournament/apply`, {
         method: 'POST',  // GET -> POST로 변경
