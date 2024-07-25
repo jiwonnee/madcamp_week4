@@ -1,24 +1,98 @@
 .join-info-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 40px;
-  }
-  
-  .title {
-    font-size: 24px;
-    font-weight: bold;
-    color: black;
-    margin-top: 40px;
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  .user-details {
-    font-size: 18px;
-    color: black;
-  }
-  
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between; /* 왼쪽과 오른쪽 정보를 나누기 위해 추가 */
+  gap: 20px; /* 왼쪽과 오른쪽 정보 간의 간격 추가 */
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.left-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 80px;
+}
+
+.right-info {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin-left: 120px;
+}
+
+.right-info > * {
+  align-self: flex-start; /* 내부 요소들은 왼쪽 정렬 */
+}
+
+img {
+  width: 250px;
+  height: auto;
+  object-fit: contain; /* 이미지 비율 유지하면서 크기 맞추기 */
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  margin-top: 40px;
+  margin-bottom: 10px; /* 텍스트들 간의 상하 간격 줄이기 */
+  text-align: left;
+}
+
+.right-info h2, .right-info h3, .right-info p {
+  margin: 10px 0; /* 텍스트들 간의 상하 간격 줄이기 */
+}
+
+.user-details {
+  font-size: 18px;
+  color: black;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+  width: 200px;
+  height: 50px;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  text-align: center;
+  z-index: 1000; /* 다른 요소들 위에 표시되도록 설정 */
+}
+
+.toast.show {
+  opacity: 1;
+}

@@ -40,7 +40,6 @@ const UserInfo = ({ user }) => {
           {userInfo ? (
             <>
               <p>아이디: {user.following_userid}</p>
-              <p>패스워드: {user.following_password}</p>
               <p>이메일: {user.email}</p>
             </>
           ) : (

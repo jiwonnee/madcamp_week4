@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/styles/css/Main.css';
-import '../../assets/styles/scss/buttons.scss';  
+import '../../assets/styles/scss/buttons.scss';
 import logo from '../../assets/images/Khartes_Logo_Mini.png';
 import Nav from '../common/Nav';
 
@@ -72,7 +72,7 @@ const Main = ({ user }) => {
 
   const handleCreateClick = async () => {
     fetchTournaments(user.id);
-    if(!isTournamentExists){
+    if (!isTournamentExists) {
       alert('이미 신청 또는 참가중인 이벤트가 존재합니다.');
       return;
     }
@@ -86,7 +86,7 @@ const Main = ({ user }) => {
         <div className="intro-section">
           <img src={logo} alt="Khartes Logo" className="logo" ref={logoRef} />
           <p className="appname" ref={appnameRef}>All-Rounder</p>
-          <div className="button-container" ref={buttonContainerRef}>
+          <div className="main-button-container" ref={buttonContainerRef}>
             <button className="main-button third" onClick={handleCreateClick}>이벤트 개최하기</button>
             <button className="main-button third" onClick={() => navigate('/join_event')}>이벤트 검색</button>
           </div>
