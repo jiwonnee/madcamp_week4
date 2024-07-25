@@ -16,7 +16,8 @@ const {
   updateRounds,
   getTournamentInfo,
   newRoundTournament,
-  submitResult
+  submitResult,
+  declineApplication
 } = require("../controllers/tournamentController");
 
 const multerInstance = multer({
@@ -33,6 +34,7 @@ router.post("/apply", insertUser);
 router.get('/:id', getTournamentInfo);
 router.get("/:id/applications", getApplications);
 router.post("/:id/accept", acceptApplication);
+router.post('/:id/decline', declineApplication);
 router.get("/:id/players", getPlayers);
 router.get("/:id/players_moreInfo", getPlayersMoreInfo);
 router.post("/:id/updatePlayers", updatePlayers);
