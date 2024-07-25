@@ -247,6 +247,29 @@ const acceptApplication = async (req, res) => {
   }
 };
 
+const declineApplication = async (req, res) => {
+  const { id } = req.params;
+  const { user_id } = req.body;
+
+  try {
+    const [result] = await db.query(
+      "DELETE FROM TournamentUser WHERE tournament_id = ? AND user_id = ? AND state = '0'",
+      [id, user_id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Application not found or already declined" });
+    }
+
+    res.status(200).json({ message: "Application declined successfully" });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ message: "Database error" });
+  }
+}
+
 const getPlayers = async (req, res) => {
   const { id } = req.params;
 
@@ -470,6 +493,7 @@ module.exports = {
   insertUser,
   getApplications,
   acceptApplication,
+  declineApplication,
   getPlayers,
   getPlayersMoreInfo,
   updatePlayers,
