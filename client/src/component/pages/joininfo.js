@@ -6,8 +6,8 @@ const JoinInfo = ({ user }) => {
   return (
     <div>
       <Nav user={user} />
+      <h1 className="title">참여 정보</h1>
       <div className="join-info-container">
-        <h1>참여 정보</h1>
         <p>여기에 사용자 참여 정보를 표시합니다.</p>
       </div>
     </div>
