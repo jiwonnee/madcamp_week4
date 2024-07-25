@@ -264,8 +264,12 @@
 }
 
 /* 라운드 테이블 스타일 */
+.round-table-container {
+  width: 100%; /* 부모 컨테이너의 너비에 맞춤 */
+}
+
 .round-table {
-  width: 100%;
+  width: 500px;
   border-collapse: collapse;
   margin-top: 20px;
 }
@@ -286,10 +290,12 @@
   background-color: #fff;
 }
 
-.round-table .round-number {
+.round-table .round-number,
+.round-table .rank-number {
   font-weight: bold;
 }
 
-.round-table .round-info {
+.round-table .round-info,
+.round-table .rank-info {
   text-align: center; /* 텍스트 중앙 정렬 */
 }
