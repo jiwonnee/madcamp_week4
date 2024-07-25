@@ -1,5 +1,6 @@
 import React from 'react';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams, Link, useLocation, Outlet } from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import '../../assets/styles/css/Event.css'; // CSS 파일 공유
 import Nav from './Nav'; // Nav 컴포넌트를 현재 폴더로부터 가져옵니다
 
@@ -30,19 +31,16 @@ const EventNav = ({ user, events }) => {
         >
           참가자
         </Link>
-        <Link 
-          to={`/event/${id}/tournament`} state={{ user, events }} 
-          className={`event-nav-button ${location.pathname.includes('/tournament') ? 'selected' : ''}`}
-        >
-          토너먼트
-        </Link>
-        <Link 
-          to={`/event/${id}/notice`} state={{ user, events }}  
-          className={`event-nav-button ${location.pathname.includes('/notice') ? 'selected' : ''}`}
-        >
-          공지
-        </Link>
       </div>
+      <TransitionGroup component={null}>
+        <CSSTransition
+          key={location.key}
+          classNames="fade"
+          timeout={300}
+        >
+          <Outlet />
+        </CSSTransition>
+      </TransitionGroup>
     </div>
   );
 };

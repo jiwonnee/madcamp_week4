@@ -17,8 +17,6 @@ import CreateEvent from "./component/pages/CreateEvent.js";
 import Event1 from "./component/pages/Event1.js";
 import Event1_Applications from "./component/pages/Event1_Applications.js";
 import Event2 from "./component/pages/Event2.js";
-import Event3 from "./component/pages/Event3.js";
-import Event4 from "./component/pages/Event4.js";
 import { PlayerProvider } from "./component/contexts/PlayerInfo.js";
 import { RoundProvider } from "./component/contexts/RoundInfo.js";
 
@@ -107,14 +105,6 @@ function App() {
           <Route
             path="/event/:id/participants"
             element={user ? <Event2 user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/event/:id/tournament"
-            element={user ? <Event3 user={user} /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/event/:id/notice"
-            element={user ? <Event4 user={user} /> : <Navigate to="/" />}
           />
         </Routes>
     </div>
