@@ -27,8 +27,6 @@ export const RoundProvider = ({ children, tournament_id }) => {
         }
 
         const data = await response.json();
-        console.log("Rounds");
-        console.log(data.rounds);
         setRounds(data.rounds);
       } catch (err) {
         console.error(err.message);
@@ -55,8 +53,6 @@ export const RoundProvider = ({ children, tournament_id }) => {
         }
 
         const data = await response.json();
-        console.log("Tournament Info");
-        console.log(data);
         setTournamentInfo(data);
       } catch (err) {
         console.error(err.message);
@@ -126,11 +122,11 @@ export const RoundProvider = ({ children, tournament_id }) => {
   }
 
   const groupAndShufflePlayers = async (players) => {
-    const playerIds = players.map((player) => player.id);
+    const playerIds = players.map((player) => player.user_id);
     const wins = await fetchWins(playerIds); // 서버에서 승수 데이터를 가져옴
 
     const groupedByWins = players.reduce((acc, player) => {
-      const winCount = wins[player.id] || 0;
+      const winCount = wins[player.user_id] || 0;
       (acc[winCount] = acc[winCount] || []).push(player);
       return acc;
     }, {});
@@ -153,31 +149,32 @@ export const RoundProvider = ({ children, tournament_id }) => {
 
     let tmpPlayers = await groupAndShufflePlayers(players);
 
-    console.log(tmpPlayers[0]);
+    console.log("After Group and Shuffle");
+    console.log(tmpPlayers);
 
     while (1) {
       for (let i = 0; i < players.length; i++) {
-        if (matchedIds.has(tmpPlayers[i].id)) continue;
+        if (matchedIds.has(tmpPlayers[i].user_id)) continue;
         if (tmpPlayers[i].state === false) {
           dropNum = dropNum + 1;
           continue;
         }
         for (let j = i + 1; j < players.length; j++) {
-          if (matchedIds.has(tmpPlayers[j].id)) continue;
+          if (matchedIds.has(tmpPlayers[j].user_id)) continue;
           if (tmpPlayers[j].state === false) continue;
 
-          if (!tmpPlayers[i].opponentId.includes(tmpPlayers[j].id)) {
+          if (!tmpPlayers[i].opponentId.includes(tmpPlayers[j].user_id)) {
             newRound.push({
               tournament_id: tournament_id,
-              player1Id: tmpPlayers[i].id,
-              player2Id: tmpPlayers[j].id,
+              player1Id: tmpPlayers[i].user_id,
+              player2Id: tmpPlayers[j].user_id,
               player1Res: 1,
               player2Res: 1,
               matchNum: newRound.length + 1,
               round_id: round_id
             });
-            matchedIds.add(tmpPlayers[i].id);
-            matchedIds.add(tmpPlayers[j].id);
+            matchedIds.add(tmpPlayers[i].user_id);
+            matchedIds.add(tmpPlayers[j].user_id);
             break;
           }
         }
@@ -197,12 +194,11 @@ export const RoundProvider = ({ children, tournament_id }) => {
 
       if (cnt > 500) return -1;
     }
-
     for (let i = 0; i < players.length; i++) {
-      if (!matchedIds.has(tmpPlayers[i].id) && tmpPlayers[i].state) {
+      if (!matchedIds.has(tmpPlayers[i].user_id) && tmpPlayers[i].state) {
         newRound.push({
           tournament_id: tournament_id,
-          player1Id: tmpPlayers[i].id,
+          player1Id: tmpPlayers[i].user_id,
           player2Id: -1,
           player1Res: 2,
           player2Res: 0,
@@ -211,6 +207,7 @@ export const RoundProvider = ({ children, tournament_id }) => {
         });
       }
     }
+    console.log(newRound);
     return newRound;
   }
 
@@ -240,15 +237,13 @@ export const RoundProvider = ({ children, tournament_id }) => {
     }
   };
 
-  const updateMatch = (num, matchNum, newRes) => {
+  const updateMatch = (num, matchNum, newRes) => { //round_id, matchNum, match
     updateResFromMatch(num, newRes);
     const updatedRounds = rounds.map((round, roundIndex) => {
-      if (roundIndex !== num - 1) return round;
-      const updatedRound = round.round.map((match) =>
-        match.matchNum === matchNum ? newRes : match
-      );
-      return { round: updatedRound, num: round.num };
+      if (round.round_id !== num || round.matchNum !== matchNum) return round;
+      return newRes;
     });
+    console.log(updatedRounds);
     setRoundsAndUpdateDatabase(updatedRounds);
   };
 

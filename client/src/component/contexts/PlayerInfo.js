@@ -156,7 +156,7 @@ export const PlayerProvider = ({ children, tournament_id }) => {
       state: player.state,
       rank: player.rank,
       win: w,
-      loss: l,
+      lose: l,
       score: sc,
       buchholz: player.buchholz,
       maxWinStreak: maxLength,
@@ -169,7 +169,7 @@ export const PlayerProvider = ({ children, tournament_id }) => {
   };
 
   const addOppFromRound = (round) => {
-    console.log(round);
+    console.log(players);
     const tmpPlayers1 = players.map((player) => {
       let updatedOpponentId = [...player.opponentId];
       let updatedMatchResult = [...player.matchResult];
@@ -179,10 +179,10 @@ export const PlayerProvider = ({ children, tournament_id }) => {
         updatedMatchResult = [...updatedMatchResult, 0];
       } else {
         round.forEach((match) => {
-          if (player.id === match.player1Id) {
+          if (player.user_id === match.player1Id) {
             updatedOpponentId = [...updatedOpponentId, match.player2Id];
             updatedMatchResult = [...updatedMatchResult, match.player1Res];
-          } else if (player.id === match.player2Id) {
+          } else if (player.user_id === match.player2Id) {
             updatedOpponentId = [...updatedOpponentId, match.player1Id];
             updatedMatchResult = [...updatedMatchResult, match.player2Res];
           }
@@ -196,15 +196,19 @@ export const PlayerProvider = ({ children, tournament_id }) => {
 
       return updatedPlayer;
     });
+    console.log('ADD: Just Updated opponents, res');
     console.log(tmpPlayers1);
 
     const tmpPlayers = tmpPlayers1.map((player) => calculateUserInfo(player));
+
+    console.log('ADD: Updated player info');
+    console.log(tmpPlayers);
 
     const resPlayers = tmpPlayers.map((player) => {
       let buch = 0;
       for (let i = 0; i < player.opponentId.length; i++) {
         tmpPlayers.map((p) => {
-          if (p.id === player.opponentId[i]) {
+          if (p.user_id === player.opponentId[i]) {
             buch = buch + p.score;
           }
         });
@@ -212,21 +216,29 @@ export const PlayerProvider = ({ children, tournament_id }) => {
       return { ...player, buchholz: buch };
     });
 
+    console.log('ADD: Updated player buchholz');
+    console.log(resPlayers);
+
     const sortedPlayers = [...resPlayers].sort(comp).map((player, index) => ({
       ...player,
       rank: index + 1,
     }));
 
+    console.log('ADD: Ranked Players');
+    console.log(sortedPlayers);
+
     setPlayersAndUpdateDatabase(sortedPlayers);
   };
 
-  const updateResFromMatch = (num, match) => {
+  const updateResFromMatch = (num, match) => { //round_id, match
+    console.log("players");
+    console.log(players);
     const tmpPlayers1 = players.map((player) => {
       let updatedMatchResult = [...player.matchResult];
 
-      if (player.id === match.player1Id) {
+      if (player.user_id === match.player1Id) {
         updatedMatchResult[num - 1] = match.player1Res;
-      } else if (player.id === match.player2Id) {
+      } else if (player.user_id === match.player2Id) {
         updatedMatchResult[num - 1] = match.player2Res;
       }
 
@@ -238,7 +250,12 @@ export const PlayerProvider = ({ children, tournament_id }) => {
       return updatedPlayer;
     });
 
+    console.log("Players only changed match result");
+    console.log(tmpPlayers1);
+
     const tmpPlayers = tmpPlayers1.map((player) => calculateUserInfo(player));
+    console.log("Player changed player informations");
+    console.log(tmpPlayers);
 
     const resPlayers = tmpPlayers.map((player) => {
       let buch = 0;
@@ -252,10 +269,17 @@ export const PlayerProvider = ({ children, tournament_id }) => {
       return { ...player, buchholz: buch };
     });
 
+    console.log("Player changed Buchholz");
+    console.log(tmpPlayers);
+
+
     const sortedPlayers = [...resPlayers].sort(comp).map((player, index) => ({
       ...player,
       rank: index + 1,
     }));
+
+    console.log("Rank Sorted Players");
+    console.log(sortedPlayers);
 
     setPlayersAndUpdateDatabase(sortedPlayers);
   };

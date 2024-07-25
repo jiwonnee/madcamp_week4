@@ -27,7 +27,7 @@ const multerInstance = multer({
 
 router.post("/create", multerInstance.single("image"), makeTournament);
 router.get("/events", getEvents);
-router.get("/matches", getMatchByRound);
+router.post("/:id/matches", getMatchByRound);
 router.post("/apply", insertUser);
 router.get('/:id', getTournamentInfo);
 router.get("/:id/applications", getApplications);
