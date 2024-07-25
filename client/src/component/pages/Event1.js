@@ -28,6 +28,7 @@ const Event1 = () => {
   return (
     <PlayerProvider tournament_id={id}>
       <RoundProvider tournament_id={id}>
+        <EventNav user={user} events={events} /> {/* EventNav 추가 */}
         <Event1Content
           user={user}
           events={events}
@@ -49,7 +50,7 @@ const Event1Content = ({
   const [roundButtons, setRoundButtons] = useState([]);
   const [rankButtons, setRankButtons] = useState([]);
   const [selectedRound, setSelectedRound] = useState(null);
-  const [selectedTab, setSelectedTab] = useState("round"); // 새로운 상태 추가
+  const [selectedTab, setSelectedTab] = useState(null); // 새로운 상태 추가
   const [userNames, setUserNames] = useState({});
   const [players, setPlayers] = useState([]);
 
@@ -79,7 +80,7 @@ const Event1Content = ({
   useEffect(() => {
     const fetchUserName = async (userId) => {
       try {
-        if(userId == -1) return "X";
+        if(userId === -1) return "X";
         const response = await fetch(`http://localhost:3001/api/users/${userId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch user");
@@ -148,7 +149,7 @@ const Event1Content = ({
         return score;
     }
   };
-  
+
   return (
     <div className="container">
       <div className="event1-container">
@@ -186,58 +187,71 @@ const Event1Content = ({
             </button>
           )}
         </div>
-        {(
+        {selectedTab && ( // selectedTab이 null이 아닐 때만 정보 표시
           <div className="round-info">
             {selectedTab === "round" && (
               <>
                 <h4>Round {selectedRound} 정보</h4>
-                <table className="round-table">
-                  <thead>
-                    <tr>
-                      <th>매치</th>
-                      <th>플레이어</th>
-                      <th>승패</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rounds
-                      .filter((round) => round.round_id === selectedRound)
-                      .map((round) => (
-                        <tr key={round.matchNum}>
-                          <td className="round-number">M{round.matchNum}</td>
-                          <td className="round-info">
-                            {userNames[round.player1Id]} vs {round.player2Id ? userNames[round.player2Id] : "X"}
-                          </td>
-                          <td className="round-info">
-                            {handleRoundInfo(round.player1Res)} - {handleRoundInfo(round.player2Res)}
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
+                <div className="round-table-container"> {/* 테이블 컨테이너 추가 */}
+                  <table className="round-table">
+                    <thead>
+                      <tr>
+                        <th>매치</th>
+                        <th>플레이어</th>
+                        <th>승패</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {rounds
+                        .filter((round) => round.round_id === selectedRound)
+                        .map((round) => (
+                          <tr key={round.matchNum}>
+                            <td className="round-number">M{round.matchNum}</td>
+                            <td className="round-info">
+                              {userNames[round.player1Id]} vs {round.player2Id ? userNames[round.player2Id] : "X"}
+                            </td>
+                            <td className="round-info">
+                              {handleRoundInfo(round.player1Res)} - {handleRoundInfo(round.player2Res)}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
               </>
             )}
             {selectedTab === "rank" && (
               <>
                 <h4>현재 순위</h4>
-                <ul className="rank-list">
-                  {players
-                    .sort((a, b) => a.player_rank - b.player_rank)
-                    .map((player) => (
-                      <li key={player.id}>
-                        <span className="rank-number">{player.player_rank}</span>
-                        <span className="rank-info">{player.following_userid}</span>
-                        <span className="rank-info">{player.win} 승 {player.lose} 패</span>
-                      </li>
-                    ))}
-                </ul>
+                <div className="round-table-container"> {/* 테이블 컨테이너 추가 */}
+                  <table className="round-table">
+                    <thead>
+                      <tr>
+                        <th>순위</th>
+                        <th>플레이어</th>
+                        <th>승패 정보</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {players
+                        .sort((a, b) => a.player_rank - b.player_rank)
+                        .map((player) => (
+                          <tr key={player.id}>
+                            <td className="rank-number">{player.player_rank}</td>
+                            <td className="rank-info">{player.following_userid}</td>
+                            <td className="rank-info">{player.win} 승 {player.lose} 패</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
               </>
             )}
           </div>
         )}
       </div>
     </div>
-  );  
+  ); 
 };
 
 export default Event1;
