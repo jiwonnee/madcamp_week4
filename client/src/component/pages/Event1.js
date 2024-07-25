@@ -47,31 +47,94 @@ const Event1Content = ({
 }) => {
   const { addRound, rounds } = useRound();
   const [roundButtons, setRoundButtons] = useState([]);
+  const [rankButtons, setRankButtons] = useState([]);
   const [selectedRound, setSelectedRound] = useState(null);
+  const [selectedTab, setSelectedTab] = useState("round"); // 새로운 상태 추가
+  const [userNames, setUserNames] = useState({});
+  const [players, setPlayers] = useState([]);
+
+  let fetchRoundCount = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/tournament/${event.id}`
+      );
+      const data = await response.json();
+      const roundCount = data.round_cnt;
+      const roundbuttons = Array.from({ length: roundCount }, (_, index) => (
+        <button key={index} className="round-btn" onClick={() => {setSelectedRound(index + 1); setSelectedTab("round");}}>R{index + 1}</button>
+      ));
+      const rankbuttons = 
+        <button className="round-btn" onClick={() => {setSelectedTab("rank");}}>현재 순위</button>;
+      setRoundButtons(roundbuttons);
+      setRankButtons(rankbuttons);
+    } catch (error) {
+      console.error("Error fetching round count:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchRoundCount = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:3001/api/tournament/${event.id}`
-        );
-        const data = await response.json();
-        const roundCount = data.round_cnt;
-        const buttons = Array.from({ length: roundCount }, (_, index) => (
-          <button key={index} className="round-btn" onClick={() => setSelectedRound(index + 1)}>R{index + 1}</button>
-        ));
-        setRoundButtons(buttons);
-      } catch (error) {
-        console.error("Error fetching round count:", error);
-      }
-    };
-
     fetchRoundCount();
   }, [event.id, rounds]);
 
+  useEffect(() => {
+    const fetchUserName = async (userId) => {
+      try {
+        if(userId == -1) return "X";
+        const response = await fetch(`http://localhost:3001/api/users/${userId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+        const data = await response.json();
+        return data.user.following_userid;
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        return "Unknown";
+      }
+    };
+
+    if (selectedRound !== null) {
+      const fetchUserNames = async () => {
+        const userIds = new Set();
+        rounds
+          .filter((round) => round.round_id === selectedRound)
+          .forEach((round) => {
+            userIds.add(round.player1Id);
+            if (round.player2Id) userIds.add(round.player2Id);
+          });
+
+        const names = {};
+        for (const userId of userIds) {
+          names[userId] = await fetchUserName(userId);
+        }
+        setUserNames(names);
+      };
+
+      fetchUserNames();
+    }
+  }, [selectedRound, rounds]);
+
   const handleNextRoundStart = async () => {
     await addRound();
+    fetchRoundCount();
   };
+
+  useEffect(() => {
+    const fetchPlayers = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/tournament/${event.id}/players_moreInfo`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+        const data = await response.json();
+        setPlayers(data.players);
+        return data.players;
+      } catch (error) {
+        
+      }
+    }
+
+    fetchPlayers();
+  })
 
   return (
     <div>
@@ -99,11 +162,10 @@ const Event1Content = ({
           </div>
           <h3>라운드별 순위</h3>
           <div className="button-container">
-            {roundButtons}
+            {rankButtons}
           </div>
-          <h3>플레이어 메뉴</h3>
+          {user.id === event.created_by && (<h3>플레이어 메뉴</h3>)}
           <div className="button-container">
-            <button>기권</button>
             {user.id === event.created_by && (
               <button onClick={handleNextRoundStart}>다음 라운드 개시</button>
             )}
@@ -113,18 +175,37 @@ const Event1Content = ({
               </button>
             )}
           </div>
-          {selectedRound && (
+          {(
             <div className="round-info">
-              <h4>Round {selectedRound} 정보</h4>
-              <ul>
-                {rounds
-                  .filter(round => round.round_id === selectedRound)
-                  .map(round => (
-                    <li key={round.matchNum}>
-                      Match {round.matchNum}: {round.player1Id} vs {round.player2Id ? round.player2Id : "X"} (Score: {round.player1Res} - {round.player2Res})
-                    </li>
-                  ))}
-              </ul>
+              {selectedTab === "round" && (
+                <>
+                  <h4>Round {selectedRound} 정보</h4>
+                  <ul>
+                    {rounds
+                      .filter((round) => round.round_id === selectedRound)
+                      .map((round) => (
+                        <li key={round.matchNum}>
+                          Match {round.matchNum}: {userNames[round.player1Id]} vs {round.player2Id ? userNames[round.player2Id] : "X"} (Score: {round.player1Res} - {round.player2Res})
+                        </li>
+                      ))}
+                  </ul>
+                </>
+              )}
+              {selectedTab === "rank" && (
+                <>
+                  <h4>현재 순위</h4>
+                  {/* players 배열을 player.rank 순으로 정렬하여 표시 */}
+                  <ul>
+                    {players
+                      .sort((a, b) => a.player_rank - b.player_rank)
+                      .map((player) => (
+                        <li>
+                          {player.player_rank}. {player.following_userid}: {player.win} 승 {player.lose} 패
+                        </li>
+                      ))}
+                  </ul>
+                </>
+              )}
             </div>
           )}
         </div>

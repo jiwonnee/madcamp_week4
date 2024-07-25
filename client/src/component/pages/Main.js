@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../assets/styles/css/Main.css';
 import '../../assets/styles/scss/buttons.scss';  
@@ -11,6 +11,26 @@ const Main = ({ user }) => {
   const logoRef = useRef(null);
   const appnameRef = useRef(null);
   const buttonContainerRef = useRef(null);
+  const [isTournamentExists, setIsTournamentExists] = useState(false);
+
+  const fetchTournaments = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3001/api/users/${id}/tournaments`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch tournaments");
+      }
+      const data = await response.json();
+      if (data.tournaments.length === 0) setIsTournamentExists(true);
+    } catch (err) {
+      console.error("Error fetching tournaments:", err);
+    }
+  };
+
+  useEffect(() => {
+    fetchTournaments(user.id);
+  }, [user.id]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -50,6 +70,15 @@ const Main = ({ user }) => {
     }, 600); // Delay for buttons to appear after logo and appname
   }, []);
 
+  const handleCreateClick = async () => {
+    fetchTournaments(user.id);
+    if(!isTournamentExists){
+      alert('이미 신청 또는 참가중인 이벤트가 존재합니다.');
+      return;
+    }
+    navigate('/create_event');
+  }
+
   return (
     <div className="home">
       <Nav user={user} />
@@ -58,7 +87,7 @@ const Main = ({ user }) => {
           <img src={logo} alt="Khartes Logo" className="logo" ref={logoRef} />
           <p className="appname" ref={appnameRef}>All-Rounder</p>
           <div className="button-container" ref={buttonContainerRef}>
-            <button className="main-button third" onClick={() => navigate('/create_event')}>이벤트 개최하기</button>
+            <button className="main-button third" onClick={handleCreateClick}>이벤트 개최하기</button>
             <button className="main-button third" onClick={() => navigate('/join_event')}>이벤트 검색</button>
           </div>
         </div>
