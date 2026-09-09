@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mysql = require('mysql2/promise');
 const jwt = require('jsonwebtoken');
@@ -24,10 +25,10 @@ const multer = Multer({
 });
 
 const db = mysql.createPool({
-  host: '34.22.83.24', // Google Cloud SQL 인스턴스 IP
-  user: 'madcamp4',    // 데이터베이스 사용자 이름
+  host: process.env.DB_HOST, // Google Cloud SQL 인스턴스 IP
+  user: process.env.DB_USER,    // 데이터베이스 사용자 이름
   password: process.env.DB_PASSWORD, // 데이터베이스 사용자 비밀번호
-  database: 'allrounder' // 사용할 데이터베이스 이름
+  database: process.env.DB_NAME // 사용할 데이터베이스 이름
 });
 
 // JWT를 생성하는 함수
